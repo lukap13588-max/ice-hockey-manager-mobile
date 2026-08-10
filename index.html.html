@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hockey Manager">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon.svg">
+<title>Ice Hockey Manager Mobile v0.5</title>
+<style>
+
+:root{--bg:#07111f;--panel:#10243d;--panel2:#0c1d31;--line:#294e70;--text:#f4f8ff;--muted:#96a9bf;--blue:#4db8ff;--blue2:#1e84cf;--green:#50d38c;--red:#ff6b6b;--amber:#ffc857;--shadow:0 14px 38px rgba(0,0,0,.28)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -15%,#173b68 0,#07111f 42%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}button,select{font:inherit}button{cursor:pointer}
+#app{max-width:760px;margin:auto;min-height:100vh;padding-bottom:92px}.top{position:sticky;top:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:calc(12px + env(safe-area-inset-top)) 15px 12px;background:rgba(7,17,31,.93);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.08)}.brand{display:flex;align-items:center;gap:10px;font-weight:950;letter-spacing:.03em}.brandLogo{width:42px;height:42px;border-radius:13px;background:linear-gradient(145deg,#59c4ff,#236ba8);display:grid;place-items:center;font-size:22px;box-shadow:0 8px 24px rgba(73,183,255,.22)}.small{font-size:10px;color:var(--muted);font-weight:800}.money{text-align:right}.money b{display:block;color:var(--green);font-size:12px}
+.main{padding:12px}.screen{display:none}.screen.active{display:block}.title{font-size:26px;font-weight:950;margin:6px 0 14px}.card{background:linear-gradient(180deg,rgba(18,42,70,.97),rgba(10,26,45,.98));border:1px solid rgba(255,255,255,.08);border-radius:18px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow)}.head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.08)}.head b{font-size:12px;letter-spacing:.08em;text-transform:uppercase}.body{padding:14px}.hero{background:linear-gradient(90deg,rgba(5,18,34,.97),rgba(5,18,34,.40)),radial-gradient(circle at 82% 0,rgba(73,183,255,.34),transparent 42%),linear-gradient(145deg,#0a1a2e,#123254)}.kicker{font-size:10px;color:var(--blue);font-weight:950;letter-spacing:.13em;text-transform:uppercase}.big{font-size:28px;font-weight:950;line-height:1.05;margin:6px 0}.muted{color:var(--muted)}.good{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}
+.matchup{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:18px 0}.team{text-align:center;font-weight:900;font-size:13px}.badge{width:64px;height:64px;border-radius:18px;background:#173a59;border:1px solid #315a7c;margin:0 auto 8px;display:grid;place-items:center;font-size:30px}.vs{font-weight:950;color:var(--muted);font-size:18px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.btn{border:1px solid #315a7c;background:#173552;color:white;border-radius:12px;padding:11px 13px;font-weight:900}.btn.primary{border:0;background:linear-gradient(#52bfff,#238bd8);color:#03111e}.btn.green{border:0;background:linear-gradient(#58db99,#29aa69);color:#03160c}.btn.red{background:#45202a;border-color:#753443}.btn.ghost{background:transparent}.btn.small{padding:7px 9px;font-size:10px}.btn:disabled{opacity:.45}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px}.stat:last-child{border-bottom:0}.chip{display:inline-flex;align-items:center;gap:5px;padding:6px 9px;border-radius:999px;background:#112b47;border:1px solid #31506e;font-size:10px;font-weight:900}.meter{height:8px;background:#081522;border-radius:999px;overflow:hidden;margin-top:5px}.meter i{display:block;height:100%;background:linear-gradient(90deg,#2789d1,#54c7ff)}
+.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:4px;margin-bottom:12px}.tab{flex:0 0 auto;border:1px solid #31506e;background:#10233a;color:#c9d5e4;padding:9px 12px;border-radius:999px;font-size:11px;font-weight:900}.tab.active{background:#1b537e;border-color:var(--blue);color:#fff}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px 7px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);white-space:nowrap}th{font-size:9px;color:#9fb1c6;text-transform:uppercase;letter-spacing:.04em}.scroll{overflow:auto}.rating{display:inline-grid;place-items:center;min-width:34px;height:28px;border-radius:8px;background:#174166;color:#c5ebff;font-weight:950}.pos{color:var(--blue);font-weight:950}.player{cursor:pointer}.player:active{background:rgba(255,255,255,.04)}
+.line{display:grid;grid-template-columns:54px 1fr 1fr 1fr;gap:7px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07)}.line.two{grid-template-columns:54px 1fr 1fr}.line.g{grid-template-columns:70px 1fr}.line label{font-size:10px;color:var(--muted);font-weight:900}select{width:100%;min-width:0;background:#0b1d31;border:1px solid #31506e;color:#fff;padding:9px 6px;border-radius:10px}.tactic{border:1px solid #31506e;background:#0b1d31;border-radius:14px;padding:12px;margin-bottom:9px;cursor:pointer}.tactic.active{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue);background:#102e4d}.tactic b{display:block;margin-bottom:3px}.quickTactics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.quickTactics button{border:1px solid #31506e;background:#0b1d31;color:#c9d5e4;border-radius:11px;padding:9px 5px;font-size:10px;font-weight:900}.quickTactics button.active{border-color:var(--blue);background:#17476e;color:white}
+.score{text-align:center;font-size:54px;font-weight:950;letter-spacing:.03em}.periods{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0}.period{padding:8px 4px;border-radius:10px;background:#0b1d31;border:1px solid #274969;text-align:center;font-size:10px}.period b{display:block;font-size:14px;margin-top:2px}.period.active{border-color:var(--blue);background:#123b60}.event{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px;line-height:1.42}.event:last-child{border-bottom:0}.time{color:var(--blue);font-weight:950;margin-right:7px}.resultrow{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px}.resultrow:last-child{border-bottom:0}.resultscore{font-weight:950}.newsitem{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px}.newsitem:last-child{border-bottom:0}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);display:grid;grid-template-columns:repeat(5,1fr);background:rgba(7,17,31,.97);backdrop-filter:blur(18px);border-top:1px solid rgba(255,255,255,.08);padding:7px 5px calc(7px + env(safe-area-inset-bottom));z-index:40}.nav button{border:0;background:transparent;color:var(--muted);font-size:9px;font-weight:900;padding:7px 2px;border-radius:12px}.nav button.active{background:#132d49;color:#fff}.nav span{display:block;font-size:19px;margin-bottom:2px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.68);z-index:60;display:none;align-items:flex-end;padding:12px}.modal.show{display:flex}.sheet{width:100%;max-width:736px;margin:auto;background:#0c1e31;border:1px solid #31506e;border-radius:22px 22px 16px 16px;padding:16px;max-height:86vh;overflow:auto}.playerhero{display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:center}.avatar{width:72px;height:72px;border-radius:18px;background:linear-gradient(145deg,#244d74,#10263d);display:grid;place-items:center;font-size:32px}.notice{padding:12px;border-radius:14px;border:1px dashed #335b7c;background:#0a1c30;color:#bed0e0;font-size:11px;line-height:1.45}.divider{height:1px;background:rgba(255,255,255,.07);margin:12px 0}.center{text-align:center}
+@media(max-width:520px){.grid2{grid-template-columns:1fr}.line,.line.two,.line.g{grid-template-columns:1fr}.hide{display:none}.main{padding:11px}.score{font-size:48px}.badge{width:58px;height:58px}.quickTactics{grid-template-columns:1fr}}
+
+.moneyBig{font-size:25px;font-weight:950;color:var(--green);margin-bottom:8px}.marketFilters{display:flex;gap:7px;overflow:auto;margin-bottom:12px}.marketFilters button{flex:0 0 auto;border:1px solid #31506e;background:#0b1d31;color:#c9d5e4;border-radius:999px;padding:8px 11px;font-size:10px;font-weight:900}.marketFilters button.active{border-color:var(--blue);background:#17476e;color:#fff}.marketCard{display:grid;grid-template-columns:46px 1fr auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)}.marketCard:last-child{border-bottom:0}.marketAvatar{width:46px;height:46px;border-radius:13px;background:linear-gradient(145deg,#244d74,#10263d);display:grid;place-items:center;font-size:22px}.marketName{font-weight:900;font-size:13px}.marketMeta{font-size:10px;color:var(--muted);margin-top:3px}.marketPrice{text-align:right}.marketPrice b{display:block;font-size:12px}.marketPrice span{display:block;font-size:9px;color:var(--muted);margin:3px 0 6px}.contractBox{background:#0a1c30;border:1px solid #2b4f70;border-radius:14px;padding:11px;margin-top:10px}.transaction{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:11px}.transaction:last-child{border-bottom:0}.transferIn{color:var(--green);font-weight:900}.transferOut{color:var(--amber);font-weight:900}@media(max-width:520px){.marketCard{grid-template-columns:42px 1fr}.marketPrice{grid-column:1/-1;text-align:left;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.marketPrice b,.marketPrice span{display:inline;margin:0}}
+
+.trainingGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.trainingChoice{border:1px solid #31506e;background:#0b1d31;color:#fff;border-radius:13px;padding:12px;text-align:left}.trainingChoice.active{border-color:var(--blue);background:#123c61;box-shadow:inset 0 0 0 1px var(--blue)}.trainingChoice b{display:block;font-size:12px}.trainingChoice span{display:block;color:var(--muted);font-size:9px;margin-top:4px}.intensityRow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.intensityRow button{border:1px solid #31506e;background:#0b1d31;color:#c9d5e4;border-radius:11px;padding:10px 5px;font-size:10px;font-weight:900}.intensityRow button.active{border-color:var(--blue);background:#17476e;color:white}.injuryRow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:11px}.injuryRow:last-child{border-bottom:0}.injuryBanner{margin-top:12px;padding:10px;border-radius:12px;background:#3b2028;border:1px solid #7b3a48;color:#ffd6dc;font-size:11px}.injuredPlayer{background:rgba(255,107,107,.035)}.warningBox{border-color:#7b5d2e;background:#2a2316;color:#ffe0a0}@media(max-width:520px){.trainingGrid{grid-template-columns:1fr 1fr}.intensityRow{grid-template-columns:1fr}}
+
+
+.playoffGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.seriesCard{background:#0a1c30;border:1px solid #2b4f70;border-radius:14px;padding:12px}.seriesTitle{font-size:10px;color:var(--muted);font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}.seriesTeam{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px}.seriesTeam:last-child{border-bottom:0}.seriesTeam.winner{color:var(--green);font-weight:900}.phaseHero{background:linear-gradient(145deg,#142747,#0c1b30);border:1px solid #31506e}.contractDecision{padding:11px 0;border-bottom:1px solid rgba(255,255,255,.07)}.contractDecision:last-child{border-bottom:0}.championBox{text-align:center;padding:18px}.championCup{font-size:54px}.archiveRow{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:11px}@media(max-width:520px){.playoffGrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="top"><div class="brand"><div class="brandLogo">🏒</div><div>ICE HOCKEY<br><span style="color:var(--blue)">MANAGER</span><div class="small">MOBILE v0.6</div></div></div><div class="money"><span class="small">BUDGET</span><b id="headerBudget">1.250.000 €</b></div></header>
+<main class="main">
+<section id="home" class="screen active">
+<div class="title">Dashboard</div>
+<div class="card hero"><div class="body"><div class="kicker">Nächstes Spiel</div><div class="big" id="nextRound">Spieltag 1</div><div class="muted" id="nextMeta">Regular Season</div><div class="matchup"><div class="team"><div class="badge">🐺</div>Frost City HC</div><div class="vs">VS</div><div class="team"><div class="badge" id="homeOppBadge">🐻</div><span id="homeOpp">Northridge Bears</span></div></div><div class="row"><button class="btn primary" onclick="go('match')">MATCH CENTER</button><button class="btn" onclick="go('team');teamTab('lines')">REIHEN</button></div></div></div>
+<div class="grid2"><div class="card"><div class="head"><b>Teamform</b><span class="chip" id="rankChip">#1</span></div><div class="body"><div class="stat"><span>Bilanz</span><b id="record">0-0-0</b></div><div class="stat"><span>Tordifferenz</span><b id="diff">0</b></div><div class="stat"><span>Reihenchemie</span><b id="chemHome">81%</b></div><div class="stat"><span>Training</span><b id="homeTraining">Offen</b></div><div class="stat"><span>Verletzt</span><b id="homeInjuries">0</b></div></div></div><div class="card"><div class="head"><b>Club</b></div><div class="body"><div class="stat"><span>Fans</span><b>6.420</b></div><div class="stat"><span>Moral</span><b class="good">82%</b></div><div class="stat"><span>Arena</span><b>6.500</b></div></div></div></div>
+<div class="card"><div class="head"><b>Top 5</b><button class="btn small" onclick="go('league')">GANZE TABELLE</button></div><div class="body scroll"><table><thead><tr><th>#</th><th>Team</th><th>SP</th><th>PTS</th></tr></thead><tbody id="miniStandings"></tbody></table></div></div>
+<div class="card"><div class="head"><b>News</b></div><div class="body" id="news"></div></div>
+</section>
+
+<section id="team" class="screen"><div class="title">Team</div><div class="tabs"><button class="tab active" data-tab="roster" onclick="teamTab('roster')">KADER</button><button class="tab" data-tab="lines" onclick="teamTab('lines')">REIHEN</button><button class="tab" data-tab="tactics" onclick="teamTab('tactics')">TAKTIK</button><button class="tab" data-tab="training" onclick="teamTab('training')">TRAINING</button><button class="tab" data-tab="stats" onclick="teamTab('stats')">STATS</button></div>
+<div id="rosterPanel"><div class="card"><div class="head"><b>Frost City HC</b><span class="chip" id="rosterCount">22 Spieler</span></div><div class="body scroll"><table><thead><tr><th>POS</th><th>Spieler</th><th>ALT</th><th>GES</th><th>FORM</th><th class="hide">ENERGIE</th></tr></thead><tbody id="roster"></tbody></table></div></div></div>
+<div id="linesPanel" style="display:none"><div class="card"><div class="head"><b>Aufstellung</b><button class="btn small" onclick="autoLineup()">AUTO-AUFSTELLUNG</button></div><div class="body"><div class="notice" id="lineupWarning">Aufstellung wird geprüft.</div></div></div><div class="card"><div class="head"><b>Sturmreihen</b><span class="chip" id="chemChip">CHEMIE 81%</span></div><div class="body" id="forwardLines"></div></div><div class="card"><div class="head"><b>Verteidigung</b></div><div class="body" id="defLines"></div></div><div class="card"><div class="head"><b>Goalies</b></div><div class="body" id="goalies"></div></div></div>
+<div id="tacticsPanel" style="display:none"><div class="card"><div class="head"><b>Forecheck</b></div><div class="body"><div class="tactic" data-kind="forecheck" data-value="Defensiv"><b>Defensiv</b><div class="muted">Weniger Risiko, weniger Druck.</div></div><div class="tactic active" data-kind="forecheck" data-value="Ausgeglichen"><b>Ausgeglichen</b><div class="muted">Solide Balance.</div></div><div class="tactic" data-kind="forecheck" data-value="Aggressiv"><b>Aggressiv</b><div class="muted">Mehr Druck, höheres Konterrisiko.</div></div></div></div><div class="card"><div class="head"><b>Offensivstil</b></div><div class="body"><div class="tactic" data-kind="offense" data-value="Kontrolliert"><b>Kontrolliert</b><div class="muted">Mehr Puckbesitz.</div></div><div class="tactic active" data-kind="offense" data-value="Ausgeglichen"><b>Ausgeglichen</b><div class="muted">Flexibel und stabil.</div></div><div class="tactic" data-kind="offense" data-value="Schnell"><b>Schnelles Umschalten</b><div class="muted">Mehr Tempo und Chancen.</div></div></div></div></div>
+<div id="trainingPanel" style="display:none">
+  <div class="grid2">
+    <div class="card"><div class="head"><b>Trainingsplan</b><span class="chip">1× / Spieltag</span></div><div class="body"><div class="stat"><span>Belastung</span><b id="trainingLoad">6 Energie</b></div><div class="stat"><span>Verletzungsrisiko</span><b id="trainingRisk">niedrig</b></div><div class="small" id="trainingDescription" style="margin-top:9px">Etwas von allem.</div></div></div>
+    <div class="card"><div class="head"><b>Medizin</b><span class="chip warn"><span id="injuryCount">0</span> verletzt</span></div><div class="body" id="injuryList"><div class="good">✓ Aktuell keine verletzten Spieler.</div></div></div>
+  </div>
+  <div class="card"><div class="head"><b>Schwerpunkt</b></div><div class="body"><div class="trainingGrid">
+    <button class="trainingChoice active" data-focus="Ausgeglichen" onclick="setTrainingFocus('Ausgeglichen')"><b>⚖️ Ausgeglichen</b><span>Form + Gesamtentwicklung</span></button>
+    <button class="trainingChoice" data-focus="Skating" onclick="setTrainingFocus('Skating')"><b>⛸️ Skating</b><span>Tempo & Bewegung</span></button>
+    <button class="trainingChoice" data-focus="Shooting" onclick="setTrainingFocus('Shooting')"><b>🎯 Shooting</b><span>Abschluss</span></button>
+    <button class="trainingChoice" data-focus="Passing" onclick="setTrainingFocus('Passing')"><b>↗️ Passing</b><span>Spielaufbau</span></button>
+    <button class="trainingChoice" data-focus="Defense" onclick="setTrainingFocus('Defense')"><b>🛡️ Defense</b><span>Defensivspiel</span></button>
+    <button class="trainingChoice" data-focus="Fitness" onclick="setTrainingFocus('Fitness')"><b>❤️ Fitness</b><span>Regeneration</span></button>
+    <button class="trainingChoice" data-focus="Goalie" onclick="setTrainingFocus('Goalie')"><b>🥅 Goalie</b><span>Torhüter-Fokus</span></button>
+  </div></div></div>
+  <div class="card"><div class="head"><b>Intensität</b></div><div class="body"><div class="intensityRow"><button data-intensity="Leicht" onclick="setTrainingIntensity('Leicht')">LEICHT</button><button class="active" data-intensity="Normal" onclick="setTrainingIntensity('Normal')">NORMAL</button><button data-intensity="Intensiv" onclick="setTrainingIntensity('Intensiv')">INTENSIV</button></div><div class="notice" style="margin-top:12px"><b>Letzte Einheit</b><br><span id="trainingSummary">Noch kein Training durchgeführt.</span></div><button class="btn green" id="trainingBtn" style="width:100%;margin-top:12px" onclick="runTraining()">TRAINING DURCHFÜHREN</button></div></div>
+</div>
+<div id="statsPanel" style="display:none"><div class="card"><div class="head"><b>Scoring Leaders</b></div><div class="body scroll"><table><thead><tr><th>#</th><th>Spieler</th><th>GP</th><th>G</th><th>A</th><th>P</th><th>SOG</th></tr></thead><tbody id="playerStats"></tbody></table></div></div><div class="card"><div class="head"><b>Goalies</b></div><div class="body scroll"><table><thead><tr><th>Goalie</th><th>GP</th><th>W</th><th>SV</th><th>SV%</th><th>GAA</th></tr></thead><tbody id="goalieStats"></tbody></table></div></div></div>
+</section>
+
+<section id="match" class="screen"><div class="title">Match Center</div><div id="preMatchBox" class="card hero"><div class="body"><div class="kicker">Match-Vorbereitung</div><div class="matchup"><div class="team"><div class="badge">🐺</div>Frost City HC<div class="small">OVR 78</div></div><div class="vs">VS</div><div class="team"><div class="badge" id="preOppBadge">🐻</div><span id="preOppName">Northridge Bears</span><div class="small" id="preOppOvr">OVR 76</div></div></div><div class="grid2"><div><div class="stat"><span>Starting Goalie</span><b id="preGoalie">Michael Smith</b></div><div class="stat"><span>Chemie</span><b id="preChem">81%</b></div></div><div><div class="stat"><span>Forecheck</span><b id="preForecheck">Ausgeglichen</b></div><div class="stat"><span>Offense</span><b id="preOffense">Ausgeglichen</b></div></div></div><div class="row" style="margin-top:12px"><button class="btn green" id="startMatchBtn" onclick="startMatch()">MATCH STARTEN</button><button class="btn" onclick="go('team');teamTab('tactics')">TAKTIK ÄNDERN</button></div></div></div>
+<div id="liveMatchBox" style="display:none"><div class="card hero"><div class="body center"><div class="kicker" id="matchStatus">1. Drittel</div><div class="matchup"><div class="team"><div class="badge">🐺</div>Frost City HC</div><div><div class="score" id="score">0 : 0</div><div class="small" id="scoreMeta">00:00</div></div><div class="team"><div class="badge" id="liveOppBadge">🐻</div><span id="liveOppName">Northridge Bears</span></div></div><div class="periods"><div class="period" id="p1"><span>1.</span><b id="p1s">0:0</b></div><div class="period" id="p2"><span>2.</span><b id="p2s">–</b></div><div class="period" id="p3"><span>3.</span><b id="p3s">–</b></div><div class="period" id="pot"><span>OT</span><b id="pots">–</b></div></div><button class="btn green" id="periodBtn" onclick="playNextPeriod()">1. DRITTEL SPIELEN</button></div></div>
+<div class="grid2"><div class="card"><div class="head"><b>Match Stats</b></div><div class="body" id="matchStats"><div class="stat"><span>Schüsse</span><b>0 : 0</b></div><div class="stat"><span>Strafminuten</span><b>0 : 0</b></div></div></div><div class="card"><div class="head"><b>Taktik während des Spiels</b></div><div class="body"><div class="small" style="margin-bottom:6px">FORECHECK</div><div class="quickTactics" id="quickForecheck"><button onclick="setTactic('forecheck','Defensiv')">DEFENSIV</button><button onclick="setTactic('forecheck','Ausgeglichen')">BALANCED</button><button onclick="setTactic('forecheck','Aggressiv')">AGGRESSIV</button></div><div class="small" style="margin:10px 0 6px">OFFENSE</div><div class="quickTactics" id="quickOffense"><button onclick="setTactic('offense','Kontrolliert')">KONTROLLIERT</button><button onclick="setTactic('offense','Ausgeglichen')">BALANCED</button><button onclick="setTactic('offense','Schnell')">SCHNELL</button></div></div></div></div>
+<div class="card"><div class="head"><b>Live Ticker</b></div><div class="body" id="ticker"><div class="muted">Das Match hat begonnen.</div></div></div></div>
+</section>
+
+<section id="transfers" class="screen">
+<div class="title">Transfers</div>
+<div class="grid2">
+  <div class="card"><div class="head"><b>Transferbudget</b><span class="chip">LIVE</span></div><div class="body"><div class="moneyBig" id="transferBudget">1.250.000 €</div><div class="stat"><span>Kader</span><b id="transferRosterCount">22 Spieler</b></div><div class="stat"><span>Gehälter / Monat</span><b id="transferPayroll">0 €</b></div></div></div>
+  <div class="card"><div class="head"><b>Kaderplanung</b></div><div class="body"><div class="stat"><span>Minimum</span><b>20 Spieler</b></div><div class="stat"><span>Marktangebote</span><b id="marketCount">0</b></div><div class="stat"><span>Transaktionen</span><b id="transferCount">0</b></div></div></div>
+</div>
+<div class="card"><div class="head"><b>Transfermarkt</b><span class="chip">v0.4</span></div><div class="body">
+  <div class="marketFilters"><button class="active" data-market="all" onclick="setMarketFilter('all')">ALLE</button><button data-market="transfer" onclick="setMarketFilter('transfer')">TRANSFER</button><button data-market="free" onclick="setMarketFilter('free')">FREE AGENTS</button></div>
+  <div id="marketList"></div>
+</div></div>
+<div class="card"><div class="head"><b>Transferhistorie</b></div><div class="body" id="transferHistory"><div class="muted">Noch keine Transfers.</div></div></div>
+</section>
+
+<section id="league" class="screen"><div class="title">Liga</div><div class="card"><div class="head"><b>Alpine Hockey League</b><span class="chip">10 Teams</span></div><div class="body scroll"><table><thead><tr><th>#</th><th>Team</th><th>SP</th><th>S</th><th>N</th><th>OT</th><th>GF</th><th>GA</th><th>DIFF</th><th>PTS</th></tr></thead><tbody id="standings"></tbody></table></div></div><div class="card"><div class="head"><b>Letzte Ergebnisse</b></div><div class="body" id="results"><div class="muted">Noch keine Spiele.</div></div></div><div class="card"><div class="body"><div class="stat"><span>Saisonfortschritt</span><b id="seasonProgress">0 / 18</b></div><button class="btn red" onclick="resetSeason()">SAISON NEU STARTEN</button></div></div></section>
+
+<section id="club" class="screen"><div class="title">Club</div><div class="card"><div class="head"><b>Frost City HC</b><span class="chip">Reputation 3★</span></div><div class="body"><div class="stat"><span>Kontostand</span><b class="good" id="clubBudget">1.250.000 €</b></div><div class="stat"><span>Gehälter / Monat</span><b id="clubPayroll">0 €</b></div><div class="stat"><span>Fans</span><b>6.420</b></div><div class="stat"><span>Arena</span><b>Frost Arena</b></div><div class="stat"><span>Kapazität</span><b>6.500</b></div></div></div><div class="notice" id="versionNotice"><b>v0.6</b><br>Neu: Top-4-Playoffs, Best-of-3-Serien, Finale, Meisterschaft, Preisgeld, Offseason und auslaufende Verträge. Dein v0.5-Spielstand wird übernommen.</div><div style="margin-top:10px"><button class="btn" onclick="go('league')">LIGA & TABELLE</button></div></section>
+</main>
+<nav class="nav"><button class="active" data-screen="home" onclick="go('home')"><span>⌂</span>HOME</button><button data-screen="team" onclick="go('team')"><span>👥</span>TEAM</button><button data-screen="match" onclick="go('match')"><span>🏒</span>MATCH</button><button data-screen="transfers" onclick="go('transfers')"><span>⇄</span>TRANSFERS</button><button data-screen="club" onclick="go('club')"><span>🏟️</span>CLUB</button></nav>
+</div>
+<div class="modal" id="playerModal" onclick="if(event.target===this)closePlayer()"><div class="sheet"><div class="row" style="justify-content:space-between"><div class="kicker">Spielerprofil</div><button class="btn small" onclick="closePlayer()">SCHLIESSEN</button></div><div id="playerDetail" style="margin-top:13px"></div></div></div>
+<script>
+
+const USER='Frost City HC';
+const teams=[{name:'Frost City HC',badge:'🐺',rating:78},{name:'Northridge Bears',badge:'🐻',rating:76},{name:'Silver Lake Kings',badge:'👑',rating:80},{name:'Ironwood Jets',badge:'✈️',rating:74},{name:'Maplewood Lions',badge:'🦁',rating:77},{name:'Alpine Eagles',badge:'🦅',rating:79},{name:'Thunder HC',badge:'⚡',rating:75},{name:'Glacier Wolves',badge:'❄️',rating:73},{name:'Red River Foxes',badge:'🦊',rating:72},{name:'Capital Blades',badge:'🗡️',rating:81}];
+const players=[
+{id:1,pos:'C',name:'Jason Miller',age:28,ovr:82,shot:84,pass:83,skate:81,def:74,form:87,energy:93,role:'Playmaker'},
+{id:2,pos:'LW',name:'Tyler Anderson',age:24,ovr:79,shot:83,pass:76,skate:84,def:67,form:82,energy:91,role:'Sniper'},
+{id:3,pos:'RW',name:'Daniel Novak',age:27,ovr:80,shot:82,pass:80,skate:80,def:72,form:84,energy:89,role:'Two-Way Forward'},
+{id:4,pos:'C',name:'Lukas Steiner',age:22,ovr:77,shot:75,pass:81,skate:78,def:73,form:79,energy:95,role:'Playmaker'},
+{id:5,pos:'LW',name:'Marco Berger',age:30,ovr:76,shot:79,pass:74,skate:73,def:70,form:76,energy:86,role:'Power Forward'},
+{id:6,pos:'RW',name:'Elias Weber',age:25,ovr:75,shot:78,pass:74,skate:77,def:68,form:80,energy:92,role:'Sniper'},
+{id:7,pos:'C',name:'Jonas Frei',age:21,ovr:73,shot:70,pass:75,skate:78,def:69,form:75,energy:96,role:'Two-Way Forward'},
+{id:8,pos:'LW',name:'Noah Keller',age:23,ovr:72,shot:74,pass:71,skate:76,def:66,form:72,energy:94,role:'Sniper'},
+{id:9,pos:'RW',name:'Mikael Larsson',age:29,ovr:74,shot:76,pass:73,skate:72,def:72,form:78,energy:87,role:'Power Forward'},
+{id:10,pos:'C',name:'David Hofer',age:26,ovr:71,shot:69,pass:72,skate:73,def:71,form:74,energy:91,role:'Defensive Forward'},
+{id:11,pos:'LW',name:'Alex Petrov',age:20,ovr:70,shot:73,pass:68,skate:75,def:63,form:77,energy:98,role:'Prospect'},
+{id:12,pos:'RW',name:'Simon Wolf',age:24,ovr:72,shot:72,pass:70,skate:74,def:67,form:73,energy:93,role:'Two-Way Forward'},
+{id:13,pos:'D',name:'Noah Schneider',age:29,ovr:81,shot:70,pass:78,skate:76,def:84,form:85,energy:90,role:'Two-Way Defense'},
+{id:14,pos:'D',name:'Erik Karlsson',age:31,ovr:80,shot:68,pass:80,skate:75,def:85,form:82,energy:87,role:'Defensive Defense'},
+{id:15,pos:'D',name:'Jan Huber',age:26,ovr:77,shot:67,pass:75,skate:74,def:80,form:79,energy:92,role:'Two-Way Defense'},
+{id:16,pos:'D',name:'Timo Graf',age:24,ovr:75,shot:72,pass:76,skate:76,def:75,form:77,energy:94,role:'Offensive Defense'},
+{id:17,pos:'D',name:'Oskar Lind',age:27,ovr:74,shot:64,pass:70,skate:73,def:79,form:74,energy:90,role:'Defensive Defense'},
+{id:18,pos:'D',name:'Ben Maurer',age:22,ovr:71,shot:62,pass:69,skate:74,def:76,form:76,energy:96,role:'Prospect'},
+{id:19,pos:'D',name:'Leon Fischer',age:25,ovr:70,shot:66,pass:68,skate:72,def:74,form:71,energy:91,role:'Depth Defense'},
+{id:20,pos:'D',name:'Theo Jansen',age:23,ovr:69,shot:65,pass:67,skate:73,def:72,form:73,energy:95,role:'Depth Defense'},
+{id:21,pos:'G',name:'Michael Smith',age:26,ovr:82,shot:0,pass:0,skate:0,def:0,form:88,energy:92,role:'Starting Goalie'},
+{id:22,pos:'G',name:'Felix Bauer',age:23,ovr:76,shot:0,pass:0,skate:0,def:0,form:81,energy:97,role:'Backup Goalie'}];
+const marketPlayers=[
+{id:101,pos:'C',name:'Mason Reed',age:25,ovr:79,shot:78,pass:82,skate:80,def:72,form:82,energy:95,role:'Playmaker',availability:'transfer',askingPrice:420000,salary:22000,years:2},
+{id:102,pos:'LW',name:'Viktor Sokolov',age:27,ovr:81,shot:86,pass:77,skate:82,def:68,form:85,energy:91,role:'Sniper',availability:'transfer',askingPrice:520000,salary:28000,years:3},
+{id:103,pos:'RW',name:"Liam O'Connor",age:23,ovr:76,shot:79,pass:74,skate:80,def:67,form:80,energy:96,role:'Sniper',availability:'free',askingPrice:0,salary:14000,years:2},
+{id:104,pos:'D',name:'Anton Berg',age:29,ovr:82,shot:73,pass:79,skate:77,def:86,form:84,energy:90,role:'Two-Way Defense',availability:'transfer',askingPrice:560000,salary:30000,years:3},
+{id:105,pos:'D',name:'Emil Rossi',age:24,ovr:75,shot:68,pass:73,skate:76,def:79,form:78,energy:95,role:'Defensive Defense',availability:'free',askingPrice:0,salary:14000,years:2},
+{id:106,pos:'G',name:'Jonas Berglund',age:28,ovr:80,shot:0,pass:0,skate:0,def:0,form:84,energy:93,role:'Starting Goalie',availability:'transfer',askingPrice:470000,salary:25000,years:2},
+{id:107,pos:'C',name:'Mateo Novak',age:20,ovr:74,shot:72,pass:78,skate:79,def:66,form:79,energy:98,role:'Prospect',availability:'free',askingPrice:0,salary:10000,years:3},
+{id:108,pos:'LW',name:'Felix Hartmann',age:26,ovr:77,shot:80,pass:75,skate:79,def:69,form:80,energy:93,role:'Two-Way Forward',availability:'transfer',askingPrice:310000,salary:18000,years:2},
+{id:109,pos:'RW',name:'Leo Andersson',age:24,ovr:78,shot:81,pass:76,skate:82,def:68,form:83,energy:95,role:'Sniper',availability:'transfer',askingPrice:340000,salary:19000,years:2},
+{id:110,pos:'D',name:'Samuel König',age:25,ovr:78,shot:70,pass:78,skate:78,def:81,form:81,energy:94,role:'Two-Way Defense',availability:'transfer',askingPrice:330000,salary:18000,years:2},
+{id:111,pos:'G',name:'Adam Pierce',age:22,ovr:74,shot:0,pass:0,skate:0,def:0,form:79,energy:97,role:'Prospect Goalie',availability:'free',askingPrice:0,salary:11000,years:3},
+{id:112,pos:'C',name:'Eric Dubois',age:30,ovr:83,shot:82,pass:86,skate:78,def:75,form:86,energy:89,role:'Elite Playmaker',availability:'transfer',askingPrice:650000,salary:34000,years:2}
+];
+players.push(...marketPlayers);
+const defaultLineup={f1:[2,1,3],f2:[5,4,6],f3:[8,7,9],f4:[11,10,12],d1:[13,14],d2:[15,16],d3:[17,18],g1:21,g2:22};
+function blankTable(){const o={};teams.forEach(x=>o[x.name]={name:x.name,gp:0,w:0,l:0,ot:0,gf:0,ga:0,pts:0});return o}
+function blankPlayerStats(){const o={};players.forEach(x=>o[x.id]=x.pos==='G'?{gp:0,w:0,l:0,shots:0,saves:0,ga:0}:{gp:0,g:0,a:0,pim:0,shots:0});return o}
+function marketValue(x){if(x.askingPrice)return x.askingPrice;let ageFactor=x.age<=23?1.18:x.age>=31?.82:1;return Math.max(90000,Math.round((((x.ovr-65)*28000)+90000)*ageFactor/5000)*5000)}
+function salaryFor(x){if(x.salary)return x.salary;return Math.max(5000,Math.round(((x.ovr-65)*700+4500)/1000)*1000)}
+function contractYearsFor(x){return x.years||((x.age<=23)?3:(x.age>=30?1:2))}
+function initialContracts(){const o={};players.filter(x=>x.id<100).forEach(x=>o[x.id]={salary:salaryFor(x),years:contractYearsFor(x)});return o}
+function initialConditions(){const o={};players.forEach(x=>o[x.id]={energy:x.energy,form:x.form,injuryGames:0,injuryName:'',xp:0,ovrGain:0});return o}
+function freshState(){return{version:5,round:0,table:blankTable(),playerStats:blankPlayerStats(),news:['Die Saison 2026/27 beginnt. Frost City HC will in die Playoffs.'],tactics:{forecheck:'Ausgeglichen',offense:'Ausgeglichen'},lineup:JSON.parse(JSON.stringify(defaultLineup)),history:[],live:null,budget:1250000,rosterIds:players.filter(x=>x.id<100).map(x=>x.id),marketAvailable:marketPlayers.map(x=>x.id),contracts:initialContracts(),transfers:[],transferLocks:{},conditions:initialConditions(),training:{focus:'Ausgeglichen',intensity:'Normal',completedRound:-1,lastSummary:''}}}
+function ensureV5(s){s.version=5;if(typeof s.budget!=='number')s.budget=1250000;if(!Array.isArray(s.rosterIds))s.rosterIds=players.filter(x=>x.id<100).map(x=>x.id);if(!Array.isArray(s.marketAvailable))s.marketAvailable=marketPlayers.map(x=>x.id).filter(id=>!s.rosterIds.includes(id));if(!s.contracts)s.contracts=initialContracts();if(!Array.isArray(s.transfers))s.transfers=[];if(!s.transferLocks)s.transferLocks={};if(!s.playerStats)s.playerStats=blankPlayerStats();players.forEach(x=>{if(!s.playerStats[x.id])s.playerStats[x.id]=x.pos==='G'?{gp:0,w:0,l:0,shots:0,saves:0,ga:0}:{gp:0,g:0,a:0,pim:0,shots:0}});s.rosterIds.forEach(id=>{const x=player(id);if(x&&!s.contracts[id])s.contracts[id]={salary:salaryFor(x),years:contractYearsFor(x)}});if(!s.history)s.history=[];if(!s.conditions)s.conditions=initialConditions();players.forEach(x=>{if(!s.conditions[x.id])s.conditions[x.id]={energy:x.energy,form:x.form,injuryGames:0,injuryName:'',xp:0,ovrGain:0}});if(!s.training)s.training={focus:'Ausgeglichen',intensity:'Normal',completedRound:-1,lastSummary:''};return s}
+let state;try{const raw=localStorage.getItem('ihm_v06')||localStorage.getItem('ihm_v05')||localStorage.getItem('ihm_v04')||localStorage.getItem('ihm_v03');state=raw?ensureV5(JSON.parse(raw)):freshState()}catch(e){state=freshState()}
+function save(){try{localStorage.setItem('ihm_v05',JSON.stringify(state))}catch(e){}}
+function ownedPlayers(){return state.rosterIds.map(player).filter(Boolean)}
+function owns(id){return state.rosterIds.includes(Number(id))}
+function contractFor(id){const x=player(id);if(!state.contracts[id]&&x)state.contracts[id]={salary:salaryFor(x),years:contractYearsFor(x)};return state.contracts[id]}
+function payrollMonthly(){return state.rosterIds.reduce((sum,id)=>sum+(contractFor(id)?.salary||0),0)}
+function formatEuro(v){return Math.round(v).toLocaleString('de-DE')+' €'}
+function team(n){return teams.find(x=>x.name===n)}function player(id){return players.find(x=>x.id===Number(id))}function rand(a,b){return Math.random()*(b-a)+a}function ri(a,b){return Math.floor(rand(a,b+1))}function poisson(l){let L=Math.exp(-l),q=1,k=0;do{k++;q*=Math.random()}while(q>L);return k-1}
+function schedule(){let arr=teams.map(x=>x.name),rounds=[],n=arr.length;for(let r=0;r<n-1;r++){let g=[];for(let i=0;i<n/2;i++){let a=arr[i],b=arr[n-1-i];g.push(r%2?[b,a]:[a,b])}rounds.push(g);arr=[arr[0],arr[n-1],...arr.slice(1,n-1)]}return rounds.concat(rounds.map(gs=>gs.map(([a,b])=>[b,a])))}const sched=schedule();
+function sortedTable(){return Object.values(state.table).sort((a,b)=>b.pts-a.pts||(b.gf-b.ga)-(a.gf-a.ga)||b.gf-a.gf)}function currentGame(){if(state.round>=sched.length)return null;return sched[state.round].find(g=>g.includes(USER))}
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.screen===id));window.scrollTo(0,0);render()}
+function teamTab(which){['roster','lines','tactics','training','stats'].forEach(x=>document.getElementById(x+'Panel').style.display=x===which?'block':'none');document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===which));if(which==='lines')renderLines();if(which==='training')renderTraining();if(which==='stats')renderPlayerStats()}
+function chemistry(){let groups=[state.lineup.f1,state.lineup.f2,state.lineup.f3,state.lineup.f4,state.lineup.d1,state.lineup.d2],sum=0;groups.forEach(g=>{let ps=g.map(player).filter(Boolean),avg=ps.reduce((s,x)=>s+effectiveOverall(x),0)/Math.max(1,ps.length),bonus=new Set(ps.map(x=>x.role)).size>1?4:0;sum+=Math.min(95,70+(avg-70)*1.1+bonus)});return Math.round(sum/groups.length)}
+function tacticMod(name){if(name!==USER)return{atk:rand(.96,1.04),def:rand(.96,1.04),shots:1};let atk=1,def=1,shots=1;if(state.tactics.forecheck==='Aggressiv'){atk+=.08;def-=.06;shots+=.08}if(state.tactics.forecheck==='Defensiv'){atk-=.05;def+=.08;shots-=.05}if(state.tactics.offense==='Schnell'){atk+=.07;def-=.03;shots+=.10}if(state.tactics.offense==='Kontrolliert'){atk+=.01;def+=.04;shots-=.04}return{atk,def,shots}}
+function lineupBonus(){const ids=[...state.lineup.f1,...state.lineup.f2,...state.lineup.f3,...state.lineup.f4,...state.lineup.d1,...state.lineup.d2,...state.lineup.d3,state.lineup.g1],ps=ids.map(player).filter(Boolean),avg=ps.reduce((s,x)=>s+effectiveOverall(x),0)/ps.length,avgForm=ps.reduce((s,x)=>s+conditionFor(x.id).form,0)/ps.length,avgEnergy=ps.reduce((s,x)=>s+conditionFor(x.id).energy,0)/ps.length;return 1+(avg-76)/100+(chemistry()-80)/500+(avgForm-80)/1200+(avgEnergy-85)/1600}
+function aiGame(home,away){let h=team(home),a=team(away),hm=tacticMod(home),am=tacticMod(away),hr=h.rating,ar=a.rating;let hg=poisson(Math.max(.7,2.65*Math.pow(hr/ar,1.7)*1.06*hm.atk/am.def)),ag=poisson(Math.max(.7,2.48*Math.pow(ar/hr,1.7)*am.atk/hm.def)),ot=false;if(hg===ag){ot=true;Math.random()<.53?hg++:ag++}return{home,away,hg,ag,ot,hs:Math.max(hg+8,ri(24,37)),as:Math.max(ag+8,ri(23,36))}}
+function applyResult(r){let h=state.table[r.home],a=state.table[r.away];h.gp++;a.gp++;h.gf+=r.hg;h.ga+=r.ag;a.gf+=r.ag;a.ga+=r.hg;if(r.hg>r.ag){h.w++;h.pts+=2;if(r.ot){a.ot++;a.pts++}else a.l++}else{a.w++;a.pts+=2;if(r.ot){h.ot++;h.pts++}else h.l++}}
+function opts(filter,current){const cur=player(current);let html='';if(cur&&filter(cur)&&isInjured(cur))html+=`<option value="${cur.id}" selected disabled>🚑 ${cur.name} (verletzt)</option>`;html+=healthyOwnedPlayers().filter(filter).map(x=>`<option value="${x.id}" ${x.id===Number(current)?'selected':''}>${x.name} · ${x.pos} (${effectiveOverall(x)})</option>`).join('');return html}
+function setLine(key,index,value){if(Array.isArray(state.lineup[key]))state.lineup[key][index]=Number(value);else state.lineup[key]=Number(value);save();renderLines();render()}
+function renderLines(){const fw=(k,l)=>`<div class="line"><label>${l}</label><select onchange="setLine('${k}',0,this.value)">${opts(x=>x.pos!=='G',state.lineup[k][0])}</select><select onchange="setLine('${k}',1,this.value)">${opts(x=>x.pos!=='G',state.lineup[k][1])}</select><select onchange="setLine('${k}',2,this.value)">${opts(x=>x.pos!=='G',state.lineup[k][2])}</select></div>`;document.getElementById('forwardLines').innerHTML=fw('f1','Reihe 1')+fw('f2','Reihe 2')+fw('f3','Reihe 3')+fw('f4','Reihe 4');const dl=(k,l)=>`<div class="line two"><label>${l}</label><select onchange="setLine('${k}',0,this.value)">${opts(x=>x.pos==='D',state.lineup[k][0])}</select><select onchange="setLine('${k}',1,this.value)">${opts(x=>x.pos==='D',state.lineup[k][1])}</select></div>`;document.getElementById('defLines').innerHTML=dl('d1','Paar 1')+dl('d2','Paar 2')+dl('d3','Paar 3');document.getElementById('goalies').innerHTML=`<div class="line g"><label>Starter</label><select onchange="setLine('g1',0,this.value)">${opts(x=>x.pos==='G',state.lineup.g1)}</select></div><div class="line g"><label>Backup</label><select onchange="setLine('g2',0,this.value)">${opts(x=>x.pos==='G',state.lineup.g2)}</select></div>`;document.getElementById('chemChip').textContent='CHEMIE '+chemistry()+'%';const warn=document.getElementById('lineupWarning');if(warn){const issues=lineupIssues();warn.innerHTML=issues.length?`<b>⚠ Aufstellung prüfen</b><br>${issues.join('<br>')}`:'<span class="good">✓ Aufstellung spielbereit.</span>';warn.classList.toggle('warningBox',issues.length>0)}}
+function setTactic(kind,value){state.tactics[kind]=value;save();render()}
+document.querySelectorAll('.tactic').forEach(el=>el.addEventListener('click',()=>setTactic(el.dataset.kind,el.dataset.value)));
+
+</script>
+<script>
+const TRAINING_FOCI={
+  Ausgeglichen:{label:'Ausgeglichen',desc:'Etwas von allem. Solide Form und Entwicklung.'},
+  Skating:{label:'Skating',desc:'Tempo, Beweglichkeit und Entwicklung der Feldspieler.'},
+  Shooting:{label:'Shooting',desc:'Abschluss und offensive Entwicklung.'},
+  Passing:{label:'Passing',desc:'Spielaufbau, Puckbewegung und Kreativität.'},
+  Defense:{label:'Defense',desc:'Positioning, Zweikampf und defensive Stabilität.'},
+  Fitness:{label:'Fitness',desc:'Regeneration und Energie stehen im Vordergrund.'},
+  Goalie:{label:'Goalie',desc:'Spezialtraining für deine Torhüter.'}
+};
+const TRAINING_INTENSITY={
+  Leicht:{energy:3,xp:7,injury:.002,form:1},
+  Normal:{energy:6,xp:13,injury:.006,form:2},
+  Intensiv:{energy:10,xp:22,injury:.015,form:2}
+};
+const INJURIES=[
+  {name:'Prellung',min:1,max:1},
+  {name:'Zerrung',min:1,max:2},
+  {name:'Handgelenksverletzung',min:1,max:3},
+  {name:'Unterkörperverletzung',min:2,max:3},
+  {name:'Oberkörperverletzung',min:1,max:2}
+];
+function conditionFor(id){
+  id=Number(id);const x=player(id);if(!x)return null;
+  if(!state.conditions[id])state.conditions[id]={energy:x.energy,form:x.form,injuryGames:0,injuryName:'',xp:0,ovrGain:0};
+  return state.conditions[id];
+}
+function effectiveOverall(x){const c=conditionFor(x.id);return Math.min(96,x.ovr+(c?.ovrGain||0))}
+function isInjured(x){const c=conditionFor(x.id);return !!(c&&c.injuryGames>0)}
+function healthyOwnedPlayers(){return ownedPlayers().filter(x=>!isInjured(x))}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function trainingAgeFactor(x){return x.age<=21?1.45:x.age<=24?1.25:x.age<=28?1:x.age<=31?.82:.65}
+function focusFactor(x,focus){
+  if(focus==='Goalie')return x.pos==='G'?1.6:.35;
+  if(x.pos==='G')return focus==='Fitness'||focus==='Ausgeglichen'?1:.4;
+  if(focus==='Fitness')return .75;
+  if(focus==='Ausgeglichen')return 1;
+  return 1.12;
+}
+function setTrainingFocus(value){if(state.live)return;state.training.focus=value;save();renderTraining()}
+function setTrainingIntensity(value){if(state.live)return;state.training.intensity=value;save();renderTraining()}
+function trainingDoneThisRound(){return state.training.completedRound===state.round}
+function runTraining(){
+  if(state.live){alert('Während eines laufenden Matches kann nicht trainiert werden.');return}
+  if(trainingDoneThisRound()){alert('Das Training für diesen Spieltag wurde bereits durchgeführt.');return}
+  const focus=state.training.focus,intensity=state.training.intensity,cfg=TRAINING_INTENSITY[intensity];
+  let improved=[],injured=[],trained=0;
+  ownedPlayers().forEach(x=>{
+    const c=conditionFor(x.id);if(c.injuryGames>0)return;
+    trained++;
+    let energyCost=cfg.energy;
+    if(focus==='Fitness')energyCost=intensity==='Leicht'?-4:intensity==='Normal'?-2:1;
+    c.energy=clamp(c.energy-energyCost,35,100);
+    c.form=clamp(c.form+cfg.form+(focus==='Ausgeglichen'?1:0)+ri(-1,1),55,99);
+    const gain=Math.round(cfg.xp*trainingAgeFactor(x)*focusFactor(x,focus));
+    c.xp+=gain;
+    if(c.xp>=100 && c.ovrGain<4){c.xp-=100;c.ovrGain++;improved.push(`${x.name} (+1 GES)`)}
+    let risk=cfg.injury;
+    if(c.energy<70)risk*=1.8;if(c.energy<55)risk*=1.7;if(x.age>=31)risk*=1.25;
+    if(Math.random()<risk){const inj=INJURIES[ri(0,INJURIES.length-1)];c.injuryGames=ri(inj.min,inj.max);c.injuryName=inj.name;injured.push(`${x.name} (${inj.name}, ${c.injuryGames} Spiel${c.injuryGames===1?'':'e'})`)}
+  });
+  state.training.completedRound=state.round;
+  state.training.lastSummary=`${trained} Spieler trainiert · ${focus} · ${intensity}`;
+  if(improved.length)state.news.unshift(`Trainingserfolg: ${improved.join(', ')}.`);
+  if(injured.length)state.news.unshift(`Verletzung im Training: ${injured.join(', ')}.`);
+  state.news=state.news.slice(0,8);save();render();teamTab('training');
+}
+function lineupIds(){return [...state.lineup.f1,...state.lineup.f2,...state.lineup.f3,...state.lineup.f4,...state.lineup.d1,...state.lineup.d2,...state.lineup.d3,state.lineup.g1,state.lineup.g2]}
+function lineupIssues(){
+  const ids=lineupIds(),issues=[];
+  const dup=ids.filter((id,i)=>ids.indexOf(id)!==i);if(dup.length)issues.push('Ein Spieler ist mehrfach in der Aufstellung eingetragen.');
+  ids.forEach((id,index)=>{const x=player(id);if(!x||!owns(id))issues.push('Ein aufgestellter Spieler gehört nicht mehr zum Kader.');else if(isInjured(x)&&index!==ids.length-1)issues.push(`${x.name} ist verletzt.`)});
+  if(isInjured(player(state.lineup.g1)))issues.push('Dein Starting Goalie ist verletzt.');
+  return [...new Set(issues)];
+}
+function autoLineup(){
+  if(state.live){alert('Während eines laufenden Matches kann die Aufstellung nicht geändert werden.');return}
+  const ranked=healthyOwnedPlayers().sort((a,b)=>effectiveOverall(b)-effectiveOverall(a)||conditionFor(b.id).form-conditionFor(a.id).form);
+  const skaters=ranked.filter(x=>x.pos!=='G'),goalies=ranked.filter(x=>x.pos==='G');
+  if(skaters.length<18||goalies.length<1){alert('Nicht genug gesunde Spieler für eine vollständige Aufstellung. Prüfe Verletzungen oder verpflichte Ersatz.');return}
+  const used=new Set();
+  const pickForward=(preferred)=>{let x=skaters.find(p=>p.pos===preferred&&!used.has(p.id))||skaters.find(p=>['LW','C','RW'].includes(p.pos)&&!used.has(p.id))||skaters.find(p=>!used.has(p.id));used.add(x.id);return x.id};
+  const lines=[];for(let i=0;i<4;i++)lines.push([pickForward('LW'),pickForward('C'),pickForward('RW')]);
+  const defenders=ranked.filter(x=>x.pos==='D'&&!used.has(x.id));
+  if(defenders.length<6){alert('Zu viele Ausfälle in der Verteidigung. Verpflichte Ersatz oder stelle weniger verletzte Spieler auf.');return}
+  const starter=goalies[0].id,backup=goalies[1]?.id||ownedPlayers().find(x=>x.pos==='G'&&x.id!==starter)?.id||starter;
+  state.lineup={f1:lines[0],f2:lines[1],f3:lines[2],f4:lines[3],d1:[defenders[0].id,defenders[1].id],d2:[defenders[2].id,defenders[3].id],d3:[defenders[4].id,defenders[5].id],g1:starter,g2:backup};
+  save();render();teamTab('lines');
+}
+function processPostMatchRecovery(userWon){
+  const dressed=new Set([...state.lineup.f1,...state.lineup.f2,...state.lineup.f3,...state.lineup.f4,...state.lineup.d1,...state.lineup.d2,...state.lineup.d3,state.lineup.g1]);
+  const recovered=[];
+  ownedPlayers().forEach(x=>{
+    const c=conditionFor(x.id);
+    if(c.injuryGames>0){c.injuryGames--;if(c.injuryGames<=0){c.injuryGames=0;c.injuryName='';c.energy=clamp(c.energy+8,35,100);recovered.push(x.name)}return}
+    if(dressed.has(x.id)){let drain=x.pos==='G'?7:9;if(state.tactics.forecheck==='Aggressiv')drain+=2;if(state.tactics.offense==='Schnell')drain+=1;c.energy=clamp(c.energy-drain+7,35,100);c.form=clamp(c.form+(userWon?2:-1)+ri(-1,1),55,99)}
+    else{c.energy=clamp(c.energy+10,35,100);c.form=clamp(c.form+ri(-1,1),55,99)}
+  });
+  if(recovered.length)state.news.unshift(`Wieder fit: ${recovered.join(', ')}.`);
+  state.training.completedRound=-1;
+}
+function injuredOwnedPlayers(){return ownedPlayers().filter(isInjured).sort((a,b)=>conditionFor(b.id).injuryGames-conditionFor(a.id).injuryGames)}
+function renderTraining(){
+  const panel=document.getElementById('trainingPanel');if(!panel)return;
+  document.querySelectorAll('[data-focus]').forEach(el=>el.classList.toggle('active',el.dataset.focus===state.training.focus));
+  document.querySelectorAll('[data-intensity]').forEach(el=>el.classList.toggle('active',el.dataset.intensity===state.training.intensity));
+  const cfg=TRAINING_INTENSITY[state.training.intensity];
+  const done=trainingDoneThisRound(),btn=document.getElementById('trainingBtn');if(btn){btn.disabled=done||!!state.live;btn.textContent=done?'TRAINING ABSOLVIERT':'TRAINING DURCHFÜHREN'}
+  const desc=document.getElementById('trainingDescription');if(desc)desc.textContent=TRAINING_FOCI[state.training.focus].desc;
+  const load=document.getElementById('trainingLoad');if(load)load.textContent=state.training.focus==='Fitness'?'Regeneration':`${cfg.energy} Energie`;
+  const risk=document.getElementById('trainingRisk');if(risk)risk.textContent=state.training.intensity==='Leicht'?'sehr niedrig':state.training.intensity==='Normal'?'niedrig':'erhöht';
+  const summary=document.getElementById('trainingSummary');if(summary)summary.textContent=state.training.lastSummary||'Noch kein Training durchgeführt.';
+  const injured=injuredOwnedPlayers(),box=document.getElementById('injuryList');if(box)box.innerHTML=injured.length?injured.map(x=>{const c=conditionFor(x.id);return`<div class="injuryRow"><span><b>${x.name}</b><br><span class="muted">${x.pos} · ${c.injuryName}</span></span><span class="chip warn">${c.injuryGames} Spiel${c.injuryGames===1?'':'e'}</span></div>`}).join(''):'<div class="good">✓ Aktuell keine verletzten Spieler.</div>';
+  const count=document.getElementById('injuryCount');if(count)count.textContent=injured.length;
+  const homeCount=document.getElementById('homeInjuries');if(homeCount)homeCount.textContent=injured.length;
+  const homeTrain=document.getElementById('homeTraining');if(homeTrain)homeTrain.textContent=done?'Erledigt':'Offen';
+}
+
+</script>
+<script>
+function openPlayer(id){const x=player(id),st=state.playerStats[id],cnd=conditionFor(id),ovr=effectiveOverall(x),attrs=x.pos==='G'?[['Reflexe',Math.min(95,ovr+2)],['Positioning',ovr],['Rebound Control',Math.max(60,ovr-2)]]:[['Schuss',x.shot+(cnd.ovrGain||0)],['Pass',x.pass+(cnd.ovrGain||0)],['Skating',x.skate+(cnd.ovrGain||0)],['Defense',x.def+(cnd.ovrGain||0)]],owned=owns(id),c=owned?contractFor(id):null;document.getElementById('playerDetail').innerHTML=`<div class="playerhero"><div class="avatar">${x.pos==='G'?'🥅':'🏒'}</div><div><div class="big" style="font-size:22px">${x.name}</div><div class="muted">${x.pos} · ${x.age} Jahre · ${x.role}</div></div><span class="rating">${ovr}</span></div>${isInjured(x)?`<div class="injuryBanner">🚑 <b>${cnd.injuryName}</b> · noch ${cnd.injuryGames} Spiel${cnd.injuryGames===1?'':'e'} verletzt</div>`:''}<div class="divider"></div><div class="stat"><span>Form</span><b>${cnd.form}%</b></div><div class="stat"><span>Energie</span><b class="${cnd.energy<65?'warn':''}">${cnd.energy}%</b></div><div class="stat"><span>Entwicklung</span><b>${cnd.ovrGain?`+${cnd.ovrGain} GES · `:''}${cnd.xp}/100 XP</b></div><div class="meter"><i style="width:${cnd.xp}%"></i></div>${attrs.map(a=>`<div class="stat"><span>${a[0]}</span><b>${a[1]}</b></div><div class="meter"><i style="width:${Math.min(100,a[1])}%"></i></div>`).join('')}<div class="divider"></div>${x.pos==='G'?`<div class="stat"><span>Saisonspiele</span><b>${st.gp}</b></div><div class="stat"><span>Siege</span><b>${st.w}</b></div><div class="stat"><span>Saves</span><b>${st.saves}</b></div>`:`<div class="stat"><span>Saison</span><b>${st.gp} GP · ${st.g} G · ${st.a} A · ${st.g+st.a} P</b></div>`}${owned?`<div class="contractBox"><div class="kicker">Vertrag</div><div class="stat"><span>Gehalt / Monat</span><b>${formatEuro(c.salary)}</b></div><div class="stat"><span>Restlaufzeit</span><b>${c.years} Jahr${c.years===1?'':'e'}</b></div><div class="stat"><span>Marktwert</span><b>${formatEuro(marketValue(x))}</b></div><div class="row" style="margin-top:9px"><button class="btn small" onclick="extendContract(${x.id})">+1 JAHR VERLÄNGERN</button><button class="btn small red" onclick="sellPlayer(${x.id})">SPIELER VERKAUFEN</button></div></div>`:`<div class="contractBox"><div class="stat"><span>Status</span><b>${x.availability==='free'?'Free Agent':'Transferliste'}</b></div><div class="stat"><span>Gehalt / Monat</span><b>${formatEuro(salaryFor(x))}</b></div></div>`}`;document.getElementById('playerModal').classList.add('show')}
+function closePlayer(){document.getElementById('playerModal').classList.remove('show')}
+function renderRoster(){const list=ownedPlayers().sort((a,b)=>{const order={C:1,LW:2,RW:3,D:4,G:5};return order[a.pos]-order[b.pos]||effectiveOverall(b)-effectiveOverall(a)});document.getElementById('roster').innerHTML=list.map(x=>{const c=conditionFor(x.id);return`<tr class="player ${isInjured(x)?'injuredPlayer':''}" onclick="openPlayer(${x.id})"><td class="pos">${x.pos}</td><td><b>${isInjured(x)?'🚑 ':''}${x.name}</b></td><td>${x.age}</td><td><span class="rating">${effectiveOverall(x)}</span></td><td>${c.form}%</td><td class="hide ${c.energy<65?'warn':''}">${c.energy}%</td></tr>`}).join('');const rc=document.getElementById('rosterCount');if(rc)rc.textContent=list.length+' Spieler'}
+function renderPlayerStats(){const roster=ownedPlayers(),skaters=roster.filter(x=>x.pos!=='G').sort((a,b)=>{let A=state.playerStats[a.id],B=state.playerStats[b.id];return(B.g+B.a)-(A.g+A.a)||B.g-A.g});document.getElementById('playerStats').innerHTML=skaters.slice(0,12).map((x,i)=>{let s=state.playerStats[x.id];return`<tr><td>${i+1}</td><td><b>${x.name}</b></td><td>${s.gp}</td><td>${s.g}</td><td>${s.a}</td><td><b>${s.g+s.a}</b></td><td>${s.shots}</td></tr>`}).join('');document.getElementById('goalieStats').innerHTML=roster.filter(x=>x.pos==='G').map(x=>{let s=state.playerStats[x.id],sv=s.shots?((s.saves/s.shots)*100).toFixed(1):'—',gaa=s.gp?(s.ga/s.gp).toFixed(2):'—';return`<tr><td><b>${x.name}</b></td><td>${s.gp}</td><td>${s.w}</td><td>${s.saves}</td><td>${sv==='—'?'—':sv+'%'}</td><td>${gaa}</td></tr>`}).join('')}
+
+</script>
+<script>
+let marketFilter='all';
+function setMarketFilter(filter){marketFilter=filter;document.querySelectorAll('.marketFilters button').forEach(b=>b.classList.toggle('active',b.dataset.market===filter));renderTransfers()}
+function signingCost(x){return x.availability==='free'?salaryFor(x)*2:x.askingPrice}
+function signPlayer(id){if(state.live){alert('Während eines laufenden Matches sind keine Transfers möglich.');return}const x=player(id);if(!x||!state.marketAvailable.includes(id))return;const cost=signingCost(x);if(state.budget<cost){alert('Dein Transferbudget reicht dafür nicht aus.');return}state.budget-=cost;state.rosterIds.push(id);state.marketAvailable=state.marketAvailable.filter(xid=>xid!==id);state.contracts[id]={salary:salaryFor(x),years:contractYearsFor(x)};conditionFor(id);state.transferLocks[id]=state.round+3;state.transfers.unshift({type:'in',name:x.name,amount:cost,round:state.round+1});state.news.unshift(`${x.name} unterschreibt bei Frost City HC.`);state.news=state.news.slice(0,7);save();render();renderRoster();renderTransfers();alert(`${x.name} wurde verpflichtet.`)}
+function minimumPositionCount(pos){return({LW:4,C:4,RW:4,D:6,G:2})[pos]||0}
+function canSellPlayer(x){return ownedPlayers().filter(p=>p.pos===x.pos).length-1>=minimumPositionCount(x.pos)}
+function sellPlayer(id){if(state.live){alert('Während eines laufenden Matches sind keine Transfers möglich.');return}const x=player(id);if(!x||!owns(id))return;if((state.transferLocks[id]||0)>state.round){alert(`Neu verpflichtete Spieler können erst ab Spieltag ${(state.transferLocks[id]||0)+1} wieder verkauft werden.`);return}if(!canSellPlayer(x)){alert(`Du brauchst mindestens ${minimumPositionCount(x.pos)} Spieler auf Position ${x.pos}. Verpflichte zuerst Ersatz.`);return}const value=Math.round(marketValue(x)*.70/5000)*5000;if(!confirm(`${x.name} für ${formatEuro(value)} verkaufen?`))return;state.rosterIds=state.rosterIds.filter(xid=>xid!==id);delete state.contracts[id];delete state.transferLocks[id];state.budget+=value;state.transfers.unshift({type:'out',name:x.name,amount:value,round:state.round+1});state.news.unshift(`${x.name} verlässt Frost City HC für ${formatEuro(value)}.`);state.news=state.news.slice(0,7);closePlayer();save();render();renderRoster();renderTransfers()}
+function extendContract(id){const x=player(id);if(!x||!owns(id))return;const c=contractFor(id);if(c.years>=5){alert('Der Vertrag läuft bereits 5 Jahre.');return}const bonus=c.salary*2;if(state.budget<bonus){alert('Nicht genug Budget für das Handgeld.');return}if(!confirm(`Vertrag mit ${x.name} um 1 Jahr verlängern? Handgeld: ${formatEuro(bonus)}`))return;state.budget-=bonus;c.years++;state.transfers.unshift({type:'contract',name:x.name,amount:bonus,round:state.round+1});state.news.unshift(`${x.name} verlängert seinen Vertrag um ein Jahr.`);closePlayer();save();render();renderTransfers();openPlayer(id)}
+function renderTransfers(){const list=state.marketAvailable.map(player).filter(Boolean).filter(x=>marketFilter==='all'||x.availability===marketFilter);const box=document.getElementById('marketList');if(box)box.innerHTML=list.length?list.sort((a,b)=>b.ovr-a.ovr).map(x=>{const cost=signingCost(x),type=x.availability==='free'?'FREE AGENT':'TRANSFER';return`<div class="marketCard"><div class="marketAvatar" onclick="openPlayer(${x.id})">${x.pos==='G'?'🥅':'🏒'}</div><div onclick="openPlayer(${x.id})"><div class="marketName">${x.name} <span class="rating">${x.ovr}</span></div><div class="marketMeta">${x.pos} · ${x.age} Jahre · ${x.role} · ${type}</div></div><div class="marketPrice"><b>${formatEuro(cost)}</b><span>${x.availability==='free'?'Handgeld':'Ablöse'} · ${formatEuro(salaryFor(x))}/Monat</span><button class="btn small ${state.budget>=cost?'green':''}" ${state.budget<cost?'disabled':''} onclick="signPlayer(${x.id})">VERPFLICHTEN</button></div></div>`}).join(''):'<div class="muted">Keine passenden Spieler verfügbar.</div>';const hist=document.getElementById('transferHistory');if(hist)hist.innerHTML=state.transfers.length?state.transfers.slice(0,12).map(t=>`<div class="transaction"><span><b class="${t.type==='in'?'transferIn':t.type==='out'?'transferOut':'good'}">${t.type==='in'?'ZUGANG':t.type==='out'?'ABGANG':'VERTRAG'}</b><br>${t.name} · Spieltag ${t.round}</span><b>${t.type==='out'?'+':'−'} ${formatEuro(t.amount)}</b></div>`).join(''):'<div class="muted">Noch keine Transfers.</div>';const ids=['transferBudget','clubBudget','headerBudget'];ids.forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=formatEuro(state.budget)});const payroll=formatEuro(payrollMonthly());['transferPayroll','clubPayroll'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=payroll});const rc=document.getElementById('transferRosterCount');if(rc)rc.textContent=state.rosterIds.length+' Spieler';const mc=document.getElementById('marketCount');if(mc)mc.textContent=state.marketAvailable.length;const tc=document.getElementById('transferCount');if(tc)tc.textContent=state.transfers.length}
+
+</script>
+<script>
+function startMatch(){if(state.live||state.round>=sched.length)return;const issues=lineupIssues();if(issues.length){alert('Deine Aufstellung ist noch nicht spielbereit:\n\n'+issues.join('\n'));go('team');teamTab('lines');return}const g=currentGame();if(!g)return;state.live={round:state.round,home:g[0],away:g[1],period:0,hg:0,ag:0,hs:0,as:0,hpim:0,apim:0,periodScores:[],events:[],finished:false};save();render()}
+function userIsHome(){return state.live&&state.live.home===USER}
+function eligibleScorers(){return [...state.lineup.f1,...state.lineup.f2,...state.lineup.f3,...state.lineup.f4,...state.lineup.d1,...state.lineup.d2,...state.lineup.d3].map(player).filter(x=>x&&!isInjured(x))}
+function weightedPick(list,key){const total=list.reduce((s,x)=>s+Math.max(1,x[key]||x.ovr),0);let r=Math.random()*total;for(const x of list){r-=Math.max(1,x[key]||x.ovr);if(r<=0)return x}return list[list.length-1]}
+function addUserGoal(period){const scorers=eligibleScorers(),scorer=weightedPick(scorers,'shot'),others=scorers.filter(x=>x.id!==scorer.id),a1=weightedPick(others,'pass'),a2=Math.random()<.68?weightedPick(others.filter(x=>x.id!==a1.id),'pass'):null;state.playerStats[scorer.id].g++;state.playerStats[scorer.id].shots++;state.playerStats[a1.id].a++;if(a2)state.playerStats[a2.id].a++;const minute=ri((period-1)*20+1,period*20),sec=String(ri(0,59)).padStart(2,'0');state.live.events.push({sort:minute*60+Number(sec),html:`<b class="good">TOR FROST CITY!</b> ${scorer.name}${a1?` · Assist: ${a1.name}${a2?', '+a2.name:''}`:''}`,time:`${String(minute).padStart(2,'0')}:${sec}`})}
+function addOpponentGoal(period,opp){const minute=ri((period-1)*20+1,period*20),sec=String(ri(0,59)).padStart(2,'0');state.live.events.push({sort:minute*60+Number(sec),html:`<b class="bad">Gegentor.</b> ${opp} nutzt seine Chance.`,time:`${String(minute).padStart(2,'0')}:${sec}`})}
+function simulatePeriod(period){const L=state.live,homeUser=L.home===USER,opp=team(homeUser?L.away:L.home),user=team(USER),um=tacticMod(USER),om=tacticMod(opp.name),userRating=user.rating*lineupBonus(),oppRating=opp.rating;let userLam=.88*Math.pow(userRating/oppRating,1.55)*um.atk/om.def,oppLam=.82*Math.pow(oppRating/userRating,1.55)*om.atk/um.def;let ug=poisson(Math.max(.18,userLam)),og=poisson(Math.max(.18,oppLam));let us=Math.max(ug+2,ri(7,14)+Math.round((um.shots-1)*10)),os=Math.max(og+2,ri(7,13));if(homeUser){L.hg+=ug;L.ag+=og;L.hs+=us;L.as+=os}else{L.ag+=ug;L.hg+=og;L.as+=us;L.hs+=os}L.hpim+=homeUser?ri(0,3)*2:ri(0,3)*2;L.apim+=ri(0,3)*2;for(let i=0;i<ug;i++)addUserGoal(period);for(let i=0;i<og;i++)addOpponentGoal(period,opp.name);const saveMinute=ri((period-1)*20+1,period*20),saveSec=String(ri(0,59)).padStart(2,'0');L.events.push({sort:saveMinute*60+Number(saveSec),html:`${player(state.lineup.g1).name} mit einem wichtigen Save.`,time:`${String(saveMinute).padStart(2,'0')}:${saveSec}`});const ugScore=homeUser?L.hg:L.ag,ogScore=homeUser?L.ag:L.hg;L.periodScores.push({ug,og});L.period=period;return{ugScore,ogScore}}
+function playNextPeriod(){const L=state.live;if(!L||L.finished)return;if(L.period<3){simulatePeriod(L.period+1);if(L.period===3){const uh=L.home===USER;let ug=uh?L.hg:L.ag,og=uh?L.ag:L.hg;if(ug===og){let userWins=Math.random()<.52;L.ot=true;if(userWins){uh?L.hg++:L.ag++;addUserGoal(4)}else{uh?L.ag++:L.hg++;addOpponentGoal(4,uh?L.away:L.home)}}finishMatch()}save();render()}}
+function finishMatch(){const L=state.live;if(!L||L.finished)return;L.finished=true;const userHome=L.home===USER,ug=userHome?L.hg:L.ag,og=userHome?L.ag:L.hg,userShots=userHome?L.hs:L.as,oppShots=userHome?L.as:L.hs;const goalieStat=state.playerStats[state.lineup.g1];goalieStat.gp++;goalieStat.shots+=oppShots;goalieStat.saves+=Math.max(0,oppShots-og);goalieStat.ga+=og;if(ug>og)goalieStat.w++;else goalieStat.l++;const dressed=[...new Set([...state.lineup.f1,...state.lineup.f2,...state.lineup.f3,...state.lineup.f4,...state.lineup.d1,...state.lineup.d2,...state.lineup.d3])];dressed.forEach(id=>state.playerStats[id].gp++);const remainingShots=Math.max(0,userShots-ug);for(let i=0;i<remainingShots;i++){let sh=weightedPick(eligibleScorers(),'shot');state.playerStats[sh.id].shots++}const result={home:L.home,away:L.away,hg:L.hg,ag:L.ag,ot:!!L.ot,hs:L.hs,as:L.as};applyResult(result);const current=sched[state.round];current.filter(g=>!g.includes(USER)).forEach(g=>{const r=aiGame(g[0],g[1]);applyResult(r);state.history.unshift(r)});state.history.unshift(result);state.history=state.history.slice(0,30);state.round++;processPostMatchRecovery(ug>og);state.news.unshift(`${USER} ${ug>og?'gewinnt':'verliert'} ${ug}:${og} gegen ${userHome?L.away:L.home}.`);state.news=state.news.slice(0,8)}
+function continueAfterMatch(){state.live=null;save();render();go('home')}
+
+</script>
+<script>
+function renderLiveMatch(){const L=state.live,pre=document.getElementById('preMatchBox'),live=document.getElementById('liveMatchBox');if(!L){pre.style.display='block';live.style.display='none';return}pre.style.display='none';live.style.display='block';const uh=L.home===USER,ug=uh?L.hg:L.ag,og=uh?L.ag:L.hg,opp=team(uh?L.away:L.home);document.getElementById('liveOppName').textContent=opp.name;document.getElementById('liveOppBadge').textContent=opp.badge;document.getElementById('score').textContent=`${ug} : ${og}`;document.getElementById('matchStats').innerHTML=`<div class="stat"><span>Schüsse</span><b>${uh?L.hs:L.as} : ${uh?L.as:L.hs}</b></div><div class="stat"><span>Strafminuten</span><b>${uh?L.hpim:L.apim} : ${uh?L.apim:L.hpim}</b></div>`;['p1','p2','p3'].forEach((id,i)=>document.getElementById(id).classList.toggle('active',L.period===i+1&&!L.finished));L.periodScores.forEach((s,i)=>{const el=document.getElementById(`p${i+1}s`);if(el)el.textContent=`${s.ug}:${s.og}`});document.getElementById('pots').textContent=L.ot?'1:0':'–';document.getElementById('ticker').innerHTML=L.events.length?[...L.events].sort((a,b)=>b.sort-a.sort).map(e=>`<div class="event"><span class="time">${e.time}</span>${e.html}</div>`).join(''):'<div class="muted">Das Match hat begonnen.</div>';const btn=document.getElementById('periodBtn');if(L.finished){document.getElementById('matchStatus').textContent=ug>og?'SIEG':'NIEDERLAGE';document.getElementById('scoreMeta').textContent=L.ot?'FINAL · OVERTIME':'FINAL';btn.textContent='WEITER ZUM DASHBOARD';btn.onclick=continueAfterMatch}else{document.getElementById('matchStatus').textContent=`${L.period+1}. DRITTEL`;document.getElementById('scoreMeta').textContent=`nach ${L.period} Drittel${L.period===1?'':'n'}`;btn.textContent=`${L.period+1}. DRITTEL SPIELEN`;btn.onclick=playNextPeriod}}
+function renderQuickTactics(){document.querySelectorAll('#quickForecheck button').forEach(b=>b.classList.toggle('active',b.textContent.startsWith(state.tactics.forecheck==='Ausgeglichen'?'BALANCED':state.tactics.forecheck.toUpperCase())));document.querySelectorAll('#quickOffense button').forEach(b=>b.classList.toggle('active',b.textContent.startsWith(state.tactics.offense==='Ausgeglichen'?'BALANCED':state.tactics.offense==='Schnell'?'SCHNELL':'KONTROLLIERT')))}
+function render(){const tab=sortedTable(),u=state.table[USER],rank=tab.findIndex(x=>x.name===USER)+1;document.getElementById('rankChip').textContent='#'+rank;document.getElementById('record').textContent=`${u.w}-${u.l}-${u.ot}`;let d=u.gf-u.ga;document.getElementById('diff').textContent=(d>0?'+':'')+d;document.getElementById('chemHome').textContent=chemistry()+'%';document.getElementById('miniStandings').innerHTML=tab.slice(0,5).map((x,i)=>`<tr><td>${i+1}</td><td>${team(x.name).badge} ${x.name}</td><td>${x.gp}</td><td><b>${x.pts}</b></td></tr>`).join('');document.getElementById('standings').innerHTML=tab.map((x,i)=>`<tr><td>${i+1}</td><td><b>${team(x.name).badge} ${x.name}</b></td><td>${x.gp}</td><td>${x.w}</td><td>${x.l}</td><td>${x.ot}</td><td>${x.gf}</td><td>${x.ga}</td><td>${x.gf-x.ga}</td><td><b>${x.pts}</b></td></tr>`).join('');document.getElementById('seasonProgress').textContent=`${state.round} / ${sched.length}`;document.getElementById('news').innerHTML=state.news.map(n=>`<div class="newsitem">📰 ${n}</div>`).join('');document.getElementById('results').innerHTML=state.history.length?state.history.slice(0,10).map(r=>`<div class="resultrow"><span>${team(r.home).badge} ${r.home} <span class="muted">vs</span> ${team(r.away).badge} ${r.away}</span><span class="resultscore">${r.hg}:${r.ag}${r.ot?' OT':''}</span></div>`).join(''):'<div class="muted">Noch keine Spiele.</div>';document.querySelectorAll('.tactic').forEach(el=>el.classList.toggle('active',state.tactics[el.dataset.kind]===el.dataset.value));const g=currentGame();if(g){const opp=g[0]===USER?g[1]:g[0],o=team(opp);document.getElementById('nextRound').textContent=`Spieltag ${state.round+1}`;document.getElementById('nextMeta').textContent=`${g[0]===USER?'Heimspiel':'Auswärtsspiel'} · Regular Season`;document.getElementById('homeOpp').textContent=o.name;document.getElementById('homeOppBadge').textContent=o.badge;document.getElementById('preOppName').textContent=o.name;document.getElementById('preOppBadge').textContent=o.badge;document.getElementById('preOppOvr').textContent='OVR '+o.rating}else{document.getElementById('nextRound').textContent='Saison beendet';document.getElementById('nextMeta').textContent='Meister: '+tab[0].name}document.getElementById('preGoalie').textContent=player(state.lineup.g1).name;document.getElementById('preChem').textContent=chemistry()+'%';document.getElementById('preForecheck').textContent=state.tactics.forecheck;document.getElementById('preOffense').textContent=state.tactics.offense;renderLines();renderPlayerStats();renderLiveMatch();renderQuickTactics();renderTransfers();renderRoster();renderTraining()}
+function resetSeason(){if(confirm('Saison wirklich neu starten?')){state=freshState();save();render();go('home')}}
+renderRoster();render();
+
+</script>
+
+<script>
+// ===== v0.6 Season / Playoff layer =====
+const v5Save=save, v5CurrentGame=currentGame, v5StartMatch=startMatch, v5FinishMatch=finishMatch, v5Render=render, v5RunTraining=runTraining, v5SignPlayer=signPlayer;
+function ensureV6(s){
+  s.version=6;
+  if(!s.phase)s.phase=s.round>=sched.length?'playoffs':'regular';
+  if(typeof s.seasonYear!=='number')s.seasonYear=2026;
+  if(!Array.isArray(s.seasonArchive))s.seasonArchive=[];
+  if(!Array.isArray(s.freeAgentIds))s.freeAgentIds=[];
+  s.freeAgentIds.forEach(id=>{const x=player(id);if(x){x.availability='free';x.askingPrice=0}});
+  if(!s.offseason)s.offseason=null;
+  if(s.round>=sched.length&&s.phase==='playoffs'&&!s.playoffs)setupPlayoffs();
+  return s;
+}
+save=function(){try{localStorage.setItem('ihm_v06',JSON.stringify(state));localStorage.setItem('ihm_v05',JSON.stringify(state))}catch(e){}};
+function playoffSeries(a,b,label){return{a,b,label,winsA:0,winsB:0,gamesPlayed:0,target:2,winner:null,results:[]}}
+function simulateAISeries(series){while(!series.winner){const r=aiGame(series.gamesPlayed%2===0?series.a:series.b,series.gamesPlayed%2===0?series.b:series.a);series.gamesPlayed++;series.results.push(r);if(r.hg>r.ag){r.home===series.a?series.winsA++:series.winsB++}else{r.away===series.a?series.winsA++:series.winsB++}r.playoff=series.label;state.history.unshift(r);if(series.winsA>=series.target)series.winner=series.a;if(series.winsB>=series.target)series.winner=series.b}}
+function prizeForFinish(kind){return kind==='champion'?300000:kind==='finalist'?150000:kind==='semifinal'?75000:25000}
+function setupPlayoffs(){
+  if(state.playoffs)return;
+  const top=sortedTable().slice(0,4).map(x=>x.name);
+  state.playoffs={stage:'semifinal',seeds:top,semis:[playoffSeries(top[0],top[3],'Halbfinale A'),playoffSeries(top[1],top[2],'Halbfinale B')],final:null,champion:null};
+  const userQualified=top.includes(USER);
+  state.playoffs.semis.forEach(s=>{if(![s.a,s.b].includes(USER))simulateAISeries(s)});
+  if(!userQualified){
+    const winners=state.playoffs.semis.map(x=>x.winner);state.playoffs.final=playoffSeries(winners[0],winners[1],'Finale');simulateAISeries(state.playoffs.final);state.playoffs.champion=state.playoffs.final.winner;enterOffseason(state.playoffs.champion,'missed');
+  }else state.news.unshift(`Playoffs! Frost City qualifiziert sich als #${top.indexOf(USER)+1}.`);
+}
+function activeUserSeries(){if(!state.playoffs)return null;if(state.playoffs.stage==='semifinal')return state.playoffs.semis.find(s=>!s.winner&&[s.a,s.b].includes(USER))||null;if(state.playoffs.stage==='final'&&state.playoffs.final&&!state.playoffs.final.winner&&[state.playoffs.final.a,state.playoffs.final.b].includes(USER))return state.playoffs.final;return null}
+function playoffGame(){const s=activeUserSeries();if(!s)return null;return s.gamesPlayed%2===0?[s.a,s.b]:[s.b,s.a]}
+currentGame=function(){if(state.phase==='regular')return v5CurrentGame();if(state.phase==='playoffs')return playoffGame();return null};
+startMatch=function(){
+  if(state.phase==='regular')return v5StartMatch();
+  if(state.phase!=='playoffs'||state.live)return;
+  const issues=lineupIssues();if(issues.length){alert('Deine Aufstellung ist noch nicht spielbereit:\n\n'+issues.join('\n'));go('team');teamTab('lines');return}
+  const g=playoffGame();if(!g)return;const sr=activeUserSeries();state.live={context:'playoffs',seriesLabel:sr.label,round:state.round,home:g[0],away:g[1],period:0,hg:0,ag:0,hs:0,as:0,hpim:0,apim:0,periodScores:[],events:[],finished:false};save();render();
+};
+function updateUserMatchStatsFromLive(L){
+  const userHome=L.home===USER,ug=userHome?L.hg:L.ag,og=userHome?L.ag:L.hg,userShots=userHome?L.hs:L.as,oppShots=userHome?L.as:L.hs;
+  const goalieStat=state.playerStats[state.lineup.g1];goalieStat.gp++;goalieStat.shots+=oppShots;goalieStat.saves+=Math.max(0,oppShots-og);goalieStat.ga+=og;if(ug>og)goalieStat.w++;else goalieStat.l++;
+  const dressed=[...new Set([...state.lineup.f1,...state.lineup.f2,...state.lineup.f3,...state.lineup.f4,...state.lineup.d1,...state.lineup.d2,...state.lineup.d3])];dressed.forEach(id=>state.playerStats[id].gp++);
+  const remainingShots=Math.max(0,userShots-ug);for(let i=0;i<remainingShots;i++){const sh=weightedPick(eligibleScorers(),'shot');state.playerStats[sh.id].shots++}
+  return{userHome,ug,og};
+}
+function resolvePlayoffSeries(series){
+  if(series.winsA>=series.target)series.winner=series.a;if(series.winsB>=series.target)series.winner=series.b;if(!series.winner)return;
+  state.news.unshift(`${series.winner} gewinnt ${series.label} mit ${series.winsA}:${series.winsB}.`);
+  if(state.playoffs.stage==='semifinal'){
+    const other=state.playoffs.semis.find(s=>s!==series);if(!other.winner)simulateAISeries(other);
+    if(series.winner!==USER){const winners=state.playoffs.semis.map(x=>x.winner);state.playoffs.final=playoffSeries(winners[0],winners[1],'Finale');simulateAISeries(state.playoffs.final);state.playoffs.champion=state.playoffs.final.winner;enterOffseason(state.playoffs.champion,'semifinal');return}
+    const winners=state.playoffs.semis.map(x=>x.winner);state.playoffs.final=playoffSeries(winners[0],winners[1],'Finale');state.playoffs.stage='final';state.news.unshift(`FINALE! Frost City trifft auf ${state.playoffs.final.a===USER?state.playoffs.final.b:state.playoffs.final.a}.`);
+  }else if(state.playoffs.stage==='final'){
+    state.playoffs.champion=series.winner;enterOffseason(series.winner,series.winner===USER?'champion':'finalist');
+  }
+}
+finishMatch=function(){
+  const L=state.live;if(!L||L.finished)return;
+  if(L.context!=='playoffs'){
+    v5FinishMatch();if(state.round>=sched.length&&state.phase==='regular'){state.phase='playoffs';setupPlayoffs()}save();return;
+  }
+  L.finished=true;const {userHome,ug,og}=updateUserMatchStatsFromLive(L);const result={home:L.home,away:L.away,hg:L.hg,ag:L.ag,ot:!!L.ot,hs:L.hs,as:L.as,playoff:L.seriesLabel};state.history.unshift(result);state.history=state.history.slice(0,50);
+  const series=activeUserSeries();series.gamesPlayed++;series.results.push(result);const winner=ug>og?USER:(userHome?L.away:L.home);winner===series.a?series.winsA++:series.winsB++;
+  processPostMatchRecovery(ug>og);state.news.unshift(`${L.seriesLabel}: Frost City ${ug>og?'gewinnt':'verliert'} ${ug}:${og}.`);resolvePlayoffSeries(series);state.news=state.news.slice(0,10);save();
+};
+function beginOffseasonContracts(){
+  if(state.offseason&&state.offseason.processed)return;
+  const pending=[];state.rosterIds.forEach(id=>{const c=contractFor(id);c.years=Math.max(0,c.years-1);if(c.years===0)pending.push(id)});
+  ownedPlayers().forEach(x=>{const c=conditionFor(x.id);c.injuryGames=0;c.injuryName='';c.energy=Math.max(c.energy,92);c.form=Math.max(72,Math.min(90,c.form))});
+  state.transferLocks={};state.offseason={processed:true,pending,summary:''};
+}
+function enterOffseason(champion,finish){
+  state.phase='offseason';state.playoffs.stage='complete';state.playoffs.champion=champion;const prize=prizeForFinish(finish);state.budget+=prize;state.offseason=null;beginOffseasonContracts();state.offseason.summary=`Saisonpreisgeld: ${formatEuro(prize)}`;
+  state.news.unshift(champion===USER?'🏆 FROST CITY HC IST MEISTER!':`🏆 ${champion} gewinnt die Meisterschaft.`);state.news.unshift(`Preisgeld für Frost City: ${formatEuro(prize)}.`);state.news=state.news.slice(0,10);
+}
+function renewExpiring(id){const x=player(id),c=contractFor(id);if(!x||!state.offseason?.pending.includes(id))return;const bonus=c.salary*3;if(state.budget<bonus){alert('Nicht genug Budget für die Vertragsverlängerung.');return}if(!confirm(`${x.name} für 2 Jahre verlängern? Handgeld: ${formatEuro(bonus)}`))return;state.budget-=bonus;c.years=2;state.offseason.pending=state.offseason.pending.filter(xid=>xid!==id);state.transfers.unshift({type:'contract',name:x.name,amount:bonus,round:'Offseason'});save();render()}
+function releaseExpiring(id){const x=player(id);if(!x||!state.offseason?.pending.includes(id))return;if(!confirm(`${x.name} ohne Ablöse freigeben?`))return;state.rosterIds=state.rosterIds.filter(xid=>xid!==id);delete state.contracts[id];state.offseason.pending=state.offseason.pending.filter(xid=>xid!==id);if(!state.marketAvailable.includes(id))state.marketAvailable.push(id);if(!state.freeAgentIds.includes(id))state.freeAgentIds.push(id);x.availability='free';x.askingPrice=0;state.transfers.unshift({type:'out',name:x.name,amount:0,round:'Offseason'});save();render()}
+function startNewSeason(){
+  if(state.phase!=='offseason')return;if(state.offseason?.pending.length){alert('Entscheide zuerst über alle auslaufenden Verträge.');return}
+  const regularWinner=sortedTable()[0]?.name||'';state.seasonArchive.unshift({year:state.seasonYear,champion:state.playoffs?.champion||'',regularWinner});state.seasonYear++;state.phase='regular';state.round=0;state.table=blankTable();state.playerStats=blankPlayerStats();state.history=[];state.live=null;state.playoffs=null;state.offseason=null;state.training.completedRound=-1;state.conditions&&Object.values(state.conditions).forEach(c=>{c.energy=Math.max(c.energy,94);c.form=Math.max(75,Math.min(88,c.form));c.injuryGames=0;c.injuryName=''});state.news=[`Neue Saison ${state.seasonYear}/${String(state.seasonYear+1).slice(-2)} beginnt. Frost City greift wieder an.`];save();render();go('home')
+}
+runTraining=function(){if(state.phase==='offseason'){alert('In der Offseason ist das Teamtraining pausiert.');return}return v5RunTraining()};
+signPlayer=function(id){const r=v5SignPlayer(id);state.freeAgentIds=state.freeAgentIds.filter(x=>x!==Number(id));save();return r};
+function ensureV6UI(){
+  if(!document.getElementById('seasonPhaseCard')){const hero=document.querySelector('#home .card.hero');const c=document.createElement('div');c.id='seasonPhaseCard';c.className='card phaseHero';c.innerHTML='<div class="head"><b>SAISONSTATUS</b><span class="chip" id="phaseChip">REGULAR SEASON</span></div><div class="body" id="phaseHome"></div>';hero.insertAdjacentElement('afterend',c)}
+  const league=document.getElementById('league');if(league&&!document.getElementById('playoffHub')){const h=document.createElement('div');h.id='playoffHub';league.appendChild(h)}
+}
+function seriesHTML(s){if(!s)return'';return`<div class="seriesCard"><div class="seriesTitle">${s.label} · Best-of-3</div><div class="seriesTeam ${s.winner===s.a?'winner':''}"><span>${team(s.a).badge} ${s.a}</span><b>${s.winsA}</b></div><div class="seriesTeam ${s.winner===s.b?'winner':''}"><span>${team(s.b).badge} ${s.b}</span><b>${s.winsB}</b></div></div>`}
+function renderV6Extras(){
+  ensureV6UI();const chip=document.getElementById('phaseChip'),home=document.getElementById('phaseHome'),hub=document.getElementById('playoffHub');
+  if(state.phase==='regular'){chip.textContent='REGULAR SEASON';home.innerHTML=`<div class="stat"><span>Saison</span><b>${state.seasonYear}/${String(state.seasonYear+1).slice(-2)}</b></div><div class="stat"><span>Playoff-Plätze</span><b>Top 4</b></div><div class="stat"><span>Format</span><b>Best-of-3</b></div>`;hub.innerHTML='<div class="card"><div class="head"><b>Playoffs</b></div><div class="body muted">Nach 18 Spieltagen qualifizieren sich die Top 4.</div></div>';return}
+  if(state.phase==='playoffs'){
+    chip.textContent=state.playoffs.stage==='final'?'FINALE':'PLAYOFFS';const s=activeUserSeries();const opp=s?(s.a===USER?s.b:s.a):null;home.innerHTML=`<div class="stat"><span>Runde</span><b>${state.playoffs.stage==='final'?'FINALE':'HALBFINALE'}</b></div>${s?`<div class="stat"><span>Serie</span><b>${s.winsA}:${s.winsB}</b></div><div class="stat"><span>Gegner</span><b>${opp}</b></div>`:''}`;
+    const g=playoffGame();if(g){const o=team(g[0]===USER?g[1]:g[0]);document.getElementById('nextRound').textContent=state.playoffs.stage==='final'?'FINALE':'HALBFINALE';document.getElementById('nextMeta').textContent=`Best-of-3 · Spiel ${s.gamesPlayed+1}`;document.getElementById('homeOpp').textContent=o.name;document.getElementById('homeOppBadge').textContent=o.badge;document.getElementById('preOppName').textContent=o.name;document.getElementById('preOppBadge').textContent=o.badge;document.getElementById('preOppOvr').textContent='OVR '+o.rating}
+    hub.innerHTML=`<div class="card"><div class="head"><b>Playoff-Baum</b><span class="chip">TOP 4</span></div><div class="body"><div class="playoffGrid">${state.playoffs.semis.map(seriesHTML).join('')}${state.playoffs.final?seriesHTML(state.playoffs.final):''}</div></div></div>`;document.getElementById('seasonProgress').textContent='18 / 18 · Playoffs';return
+  }
+  chip.textContent='OFFSEASON';const champ=state.playoffs?.champion||'–';home.innerHTML=`<div class="stat"><span>Meister</span><b>${champ}</b></div><div class="stat"><span>Preisgeld</span><b class="good">${state.offseason?.summary||'–'}</b></div><div class="stat"><span>Offene Verträge</span><b class="${state.offseason?.pending.length?'warn':'good'}">${state.offseason?.pending.length||0}</b></div>`;
+  document.getElementById('nextRound').textContent='OFFSEASON';document.getElementById('nextMeta').textContent=`Saison ${state.seasonYear}/${String(state.seasonYear+1).slice(-2)} abgeschlossen`;document.getElementById('homeOpp').textContent=champ;document.getElementById('homeOppBadge').textContent='🏆';
+  const pending=state.offseason?.pending||[];hub.innerHTML=`<div class="card"><div class="championBox"><div class="championCup">🏆</div><div class="big" style="font-size:24px">${champ}</div><div class="muted">Meister ${state.seasonYear}/${String(state.seasonYear+1).slice(-2)}</div></div></div><div class="card"><div class="head"><b>Auslaufende Verträge</b><span class="chip">${pending.length} offen</span></div><div class="body">${pending.length?pending.map(id=>{const x=player(id),c=contractFor(id);return`<div class="contractDecision"><b>${x.name}</b> · ${x.pos} · GES ${effectiveOverall(x)}<div class="small">${formatEuro(c.salary)}/Monat · Vertrag abgelaufen</div><div class="row" style="margin-top:8px"><button class="btn small green" onclick="renewExpiring(${id})">2 JAHRE VERLÄNGERN</button><button class="btn small red" onclick="releaseExpiring(${id})">FREIGEBEN</button></div></div>`}).join(''):'<div class="good">✓ Alle Vertragsentscheidungen erledigt.</div>'}${!pending.length?'<button class="btn green" style="width:100%;margin-top:12px" onclick="startNewSeason()">NEUE SAISON STARTEN</button>':''}</div></div>${state.seasonArchive.length?`<div class="card"><div class="head"><b>Saisonhistorie</b></div><div class="body">${state.seasonArchive.slice(0,5).map(a=>`<div class="archiveRow"><span>${a.year}/${String(a.year+1).slice(-2)}</span><b>🏆 ${a.champion}</b></div>`).join('')}</div></div>`:''}`;document.getElementById('seasonProgress').textContent='Saison beendet';
+}
+render=function(){v5Render();renderV6Extras()};
+state=ensureV6(state);if(state.round>=sched.length&&state.phase==='playoffs'&&!state.playoffs)setupPlayoffs();save();render();
+</script>
+
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}</script>
+</body></html>
