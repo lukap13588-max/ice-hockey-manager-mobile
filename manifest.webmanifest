@@ -1,0 +1,24 @@
+{
+  "name": "Ice Hockey Manager Mobile",
+  "short_name": "Hockey Manager",
+  "description": "Führe deinen Eishockeyclub durch Transfers, Training, Taktik, Playoffs und mehrere Saisons.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#050b14",
+  "theme_color": "#07111f",
+  "orientation": "portrait-primary",
+  "lang": "de",
+  "categories": [
+    "games",
+    "sports"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
