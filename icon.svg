@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#65d8ff"/><stop offset="0.55" stop-color="#238bd8"/><stop offset="1" stop-color="#0a2741"/>
+  </linearGradient>
+</defs>
+<rect width="512" height="512" rx="112" fill="#07111f"/>
+<circle cx="256" cy="256" r="190" fill="url(#g)" opacity=".18"/>
+<path d="M132 355c74-8 142-41 211-112l36 34c-69 79-151 120-236 130z" fill="#f7fbff"/>
+<path d="M337 116l52 48-87 96-56-51z" fill="#56c7ff"/>
+<circle cx="130" cy="383" r="38" fill="#111827" stroke="#f7fbff" stroke-width="16"/>
+<path d="M173 132h164v38H173z" rx="19" fill="#f7fbff"/>
+<text x="256" y="333" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="78" font-weight="900" fill="#f7fbff">IHM</text>
+</svg>
