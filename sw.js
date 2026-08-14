@@ -1,4 +1,4 @@
-const CACHE="ihm-release-flat-v711";
+const CACHE="ihm-release-flat-v712";
 const STATIC=["./","./index.html","./styles.css","./data.js","./core.js","./engine.js","./audio.js","./legacy.js","./frontoffice.js","./prosystems.js","./multileague.js","./ui.js","./release.js","./app.js","./manifest.webmanifest","./icon-192.png","./icon-512.png","./menu-loop.wav","./crowd-loop.wav","./match-intro.wav","./goal-horn.wav","./win.wav"];
 self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)).then(()=>self.skipWaiting())));
 self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
