@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#061321">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ice Hockey Manager">
+<meta name="description" content="Ice Hockey Manager Mobile – baue deinen Club auf, entwickle Spieler und kämpfe um die Meisterschaft.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="stylesheet" href="./styles.css?v=700">
+<title>Ice Hockey Manager Mobile 1.0 1.0 Release Candidate 2</title>
+</head>
+<body>
+<div id="boot" class="boot">
+  <div class="boot-logo">🏒</div>
+  <h1>Ice Hockey Manager</h1>
+  <div class="boot-sub">1.0 REBUILD</div>
+  <div class="boot-bar"><i></i></div>
+</div>
+
+<div id="start" class="start hidden"></div>
+
+<div id="app" class="app hidden">
+  <header class="topbar">
+    <button class="brand" data-action="home">
+      <span class="brand-logo">🏒</span>
+      <span><b id="clubName">Frost City HC</b><small id="seasonLabel">Saison 2026/27</small></span>
+    </button>
+    <div class="top-actions">
+      <button id="audioBtn" class="icon-btn" aria-label="Ton">🔇</button>
+      <div class="money"><small>BUDGET</small><b id="budgetLabel">€0</b></div>
+    </div>
+  </header>
+
+  <main id="screens" class="screens">
+    <section id="screen-home" class="screen active"></section>
+    <section id="screen-team" class="screen"></section>
+    <section id="screen-match" class="screen"></section>
+    <section id="screen-league" class="screen"></section>
+    <section id="screen-market" class="screen"></section>
+    <section id="screen-club" class="screen"></section>
+  </main>
+
+  <nav class="nav">
+    <button data-screen="home" class="active"><span>⌂</span>HOME</button>
+    <button data-screen="team"><span>👥</span>TEAM</button>
+    <button data-screen="match"><span>🏒</span>MATCH</button>
+    <button data-screen="league"><span>🏆</span>LIGA</button>
+    <button data-screen="market"><span>⇄</span>MARKT</button>
+    <button data-screen="club"><span>🏟️</span>CLUB</button>
+  </nav>
+</div>
+
+<div id="modal" class="modal hidden"><div id="modalCard" class="modal-card"></div></div>
+<div id="toast" class="toast"></div>
+
+<script src="./js/data.js?v=700"></script>
+<script src="./js/core.js?v=700"></script>
+<script src="./js/engine.js?v=700"></script>
+<script src="./js/audio.js?v=700"></script>
+<script src="./js/legacy.js?v=700"></script>
+<script src="./js/frontoffice.js?v=700"></script>
+<script src="./js/prosystems.js?v=700"></script>
+<script src="./js/multileague.js?v=700"></script>
+<script src="./js/ui.js?v=700"></script>
+<script src="./js/release.js?v=700"></script>
+<script src="./js/app.js?v=700"></script>
+</body>
+</html>
