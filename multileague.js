@@ -36,7 +36,7 @@ I.leagueDefs=[
 
 I.ensureUniverse=function(){
  const s=I.state;
- if(s.universe&&s.universe.version>=2)return;
+ if(s.universe&&s.universe.version>=2&&s.universe.leagues&&I.leagueDefs.every(ld=>s.universe.leagues[ld.id])){s.managerCareer=s.managerCareer||{club:I.USER,league:"ALP",seasons:0,reputation:20,offers:[]};return;}
  s.managerCareer=s.managerCareer||{club:I.USER,league:"ALP",seasons:0,reputation:20,offers:[]};
  s.universe={version:2,season:s.seasonYear,leagues:{},champions:[],continental:null};
  I.leagueDefs.forEach(ld=>{

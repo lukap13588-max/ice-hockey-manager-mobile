@@ -15,7 +15,15 @@ function startApp(){
  E("audioBtn").addEventListener("click",()=>I.audio.toggle());
  document.querySelector(".brand").addEventListener("click",()=>{I.ensureUniverse?.();I.ensureReleaseSystems?.();I.UI.go("home")});
  E("modal").addEventListener("click",e=>{if(e.target===E("modal"))I.UI.close()});
- I.ensureUniverse?.();I.ensureReleaseSystems?.();I.UI.go("home");I.audio.sync()
+ try{
+   I.ensureUniverse?.();
+   I.ensureReleaseSystems?.();
+   I.UI.go("home");
+ }catch(err){
+   console.error("IHM startup migration error",err);
+   try{ I.UI.go("home"); }catch(e){ console.error("IHM home render error",e); }
+ }
+ try{ I.audio.sync(); }catch(e){ console.warn("Audio init skipped",e); }
 }
 window.addEventListener("load",()=>{
  setTimeout(()=>{E("boot").classList.add("hide");setTimeout(()=>E("boot").remove(),260);showStart()},240);

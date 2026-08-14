@@ -16,7 +16,10 @@ I.ensureReleaseSystems=function(){
    };
  });
  s.managerCareer=s.managerCareer||{club:I.USER,league:"ALP",seasons:0,reputation:20,offers:[]};
- s.managerCareer.history=s.managerCareer.history||[{season:s.seasonYear,club:s.managerCareer.club,league:s.managerCareer.league}];
+ s.managerCareer.club=s.managerCareer.club||I.USER;
+ s.managerCareer.league=s.managerCareer.league||"ALP";
+ s.managerCareer.offers=Array.isArray(s.managerCareer.offers)?s.managerCareer.offers:[];
+ s.managerCareer.history=Array.isArray(s.managerCareer.history)?s.managerCareer.history:[{season:s.seasonYear,club:s.managerCareer.club,league:s.managerCareer.league}];
 };
 
 I.playWorldChampionsCup=function(){

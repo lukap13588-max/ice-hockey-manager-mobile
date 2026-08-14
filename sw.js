@@ -1,5 +1,5 @@
-const CACHE="ihm-release-v700";
-const STATIC=["./","./index.html","./styles.css","./js/data.js","./js/core.js","./js/engine.js","./js/audio.js","./js/legacy.js","./js/frontoffice.js","./js/prosystems.js","./js/multileague.js","./js/ui.js","./js/release.js","./js/app.js","./manifest.webmanifest","./icon-192.png","./icon-512.png","./assets/audio/menu-loop.wav","./assets/audio/crowd-loop.wav","./assets/audio/match-intro.wav","./assets/audio/goal-horn.wav","./assets/audio/win.wav"];
+const CACHE="ihm-release-flat-v711";
+const STATIC=["./","./index.html","./styles.css","./data.js","./core.js","./engine.js","./audio.js","./legacy.js","./frontoffice.js","./prosystems.js","./multileague.js","./ui.js","./release.js","./app.js","./manifest.webmanifest","./icon-192.png","./icon-512.png","./menu-loop.wav","./crowd-loop.wav","./match-intro.wav","./goal-horn.wav","./win.wav"];
 self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(STATIC)).then(()=>self.skipWaiting())));
 self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
 self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;if(e.request.mode==="navigate"){e.respondWith(fetch(e.request,{cache:"no-store"}).catch(()=>caches.match("./index.html")));return}e.respondWith(caches.match(e.request).then(x=>x||fetch(e.request).then(r=>{const c=r.clone();caches.open(CACHE).then(k=>k.put(e.request,c));return r}))) });

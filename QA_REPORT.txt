@@ -1,0 +1,12 @@
+IHM 1.0 RC2 START FIX
+Syntaxfehler: 0
+Runtime-Test: BESTANDEN
+START FIX QA OK - 30 SEASONS
+
+Fixes:
+- defensiver Start/Migration alter Spielstände
+- beschädigte Save-Daten blockieren Start nicht mehr
+- World-System repariert unvollständige Migration
+- Startup-Watchdog nach 3,5 Sekunden
+- Audiofehler blockieren UI nicht
+- neuer Service-Worker Cache v710
