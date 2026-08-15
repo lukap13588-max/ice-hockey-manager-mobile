@@ -1,15 +1,20 @@
-ICE HOCKEY MANAGER MOBILE – GITHUB FLAT BUILD
+ICE HOCKEY MANAGER MOBILE 1.0 — FINAL
 
-Dieser Build passt zu deinem aktuellen Repository:
-ALLE Dateien liegen direkt im Hauptverzeichnis.
+Dieser Build basiert auf dem auf dem iPhone erfolgreich über eine komplette Saison getesteten Career-Fix-Build.
 
-Upload:
-1. Alle Dateien aus dem ZIP auswählen.
-2. Gemeinsam auf GitHub hochladen.
-3. Gleichnamige Dateien ersetzen.
-4. Commit changes.
-5. GitHub Pages kurz aktualisieren lassen.
-6. Spielseite neu öffnen.
+FINAL PASS:
+• keine neuen Gameplay-Großfeatures
+• Mobile Touch-/Safe-Area-Polish
+• verbesserte Start- und Runtime-Absicherung
+• neuer finaler Service-Worker-Cache
+• Schutz gegen alte Cache-Mischungen
+• Savegame-Backup-Härtung, soweit vom bestehenden Save-System unterstützt
+• bestehender Career-Start-Fix bleibt enthalten
 
-Keine js/ oder assets/ Ordner nötig.
-Service-Worker-Cache: v711.
+GITHUB:
+Alle Dateien dieses ZIPs liegen direkt im Hauptverzeichnis.
+Alle Dateien gemeinsam über Add file → Upload files hochladen und gleichnamige Dateien ersetzen.
+Danach Commit changes.
+
+WICHTIG:
+Nach dem Upload GitHub Pages kurz aktualisieren lassen und das Spiel neu öffnen.
